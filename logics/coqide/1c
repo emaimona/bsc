@@ -1,0 +1,32 @@
+Require Import Classical.
+
+Parameters P1 Q1 R1: Prop.
+Section exercise1a.
+Hypothesis pr1: P1->Q1.
+Hypothesis pr2: Q1/\(R1\/P1).
+Hypothesis pr3: ~(Q1\/R1).
+
+Goal False.
+unfold not in *.
+pose proof(proj1 pr2).
+pose proof(proj2 pr2).
+Abort.
+End exercise1a.
+
+Section exercise1c.
+Parameters P Q R E: Prop.
+Hypothesis p1: P/\(Q\/R).
+Hypotheses p2: P->~R.
+Goal Q\/E.
+
+pose proof(proj1 p1).
+pose proof(p2 H).
+pose proof(proj2 p1).
+destruct H1 as [h0|h1].
+pose proof(or_introl (B:= E) h0).
+Show 2.
+exact H1.
+pose proof(H0 h1).
+contradiction.
+Qed.
+End exercise1c.

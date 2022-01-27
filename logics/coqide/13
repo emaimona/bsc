@@ -1,0 +1,120 @@
+Require Import Classical.
+
+Parameters A B C P Q R: Prop.
+
+Section exe1.
+Hypothesis pr1: P->Q.
+Hypothesis pr2: Q/\(R\/P).
+Hypothesis pr3: ~(Q\/R).
+
+Goal False.
+
+unfold not in *.
+destruct pr2.
+pose proof(or_introl (B:=R) H).
+pose proof(pr3 H1).
+exact H2.
+Qed.
+End exe1.
+
+
+Section exe2.
+Hypothesis pr1: ~R->Q.
+Hypothesis pr2: ~P\/~Q.
+Hypothesis pr3: ~(P<->Q).
+
+Goal ~(P\/Q).
+unfold iff in *.
+unfold not in *.
+intros H1.
+
+destruct pr2 as [H2|H3].
+Show 2.
+destruct H1 as [H4|H5].
+pose proof(H2 H4).
+exact H.
+Abort.
+End exe2.
+
+
+Section exe3.
+
+Hypothesis pr1: A\/B.
+Hypothesis pr2: B\/C.
+Hypothesis pr3: ~B.
+
+Goal A/\C.
+
+unfold not in *.
+destruct pr2.
+
+contradiction.
+destruct pr1.
+pose proof(conj H0 H).
+exact H1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

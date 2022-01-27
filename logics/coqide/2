@@ -1,0 +1,85 @@
+Require Import Classical.
+
+Parameters P Q R S: Prop.
+Section exe1.
+Hypothesis pr1: P->Q.
+Hypothesis pr2: P/\S.
+Goal S/\Q.
+
+pose proof(proj1 pr2).
+pose proof(proj2 pr2).
+pose proof(pr1 H).
+pose proof(conj H0 H1).
+exact H2.
+Qed.
+End exe1.
+
+
+Section exe2.
+Goal (P->Q)->(Q->R)->(P->R).
+
+intros.
+pose proof(H H1).
+pose proof(H0 H2).
+exact H3.
+Qed.
+End exe2.
+
+Section exe3.
+Hypothesis pr1: P\/Q.
+Goal Q\/P.
+
+destruct pr1.
+pose proof(or_intror (A:=Q) H).
+exact H0.
+pose proof(or_introl (B:=P) H).
+
+exact H0.
+Qed.
+End exe3.
+
+
+Section exe4.
+Hypothesis pr1: P->Q.
+Hypothesis pr2: ~Q.
+Goal ~P.
+
+unfold not in *.
+intros.
+pose proof(pr1 H).
+contradiction.
+Qed.
+End exe4.
+
+Section exe5.
+Goal P/\(Q\/R)->(P/\Q)\/(P\/R).
+intros H.
+destruct H.
+destruct H0.
+pose proof(or_introl (B:=(P\/R)) H0).
+pose proof(conj H H1).
+exact H2.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
