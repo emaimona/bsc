@@ -1,0 +1,2 @@
+
+            remainder = number % 10;
