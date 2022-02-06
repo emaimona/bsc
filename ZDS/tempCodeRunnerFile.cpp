@@ -1,2 +1,2 @@
 
-            remainder = number % 10;
+            node->left = deleteNodeRecursively(node

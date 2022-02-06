@@ -7,7 +7,7 @@ class Stack{
     int top, size;
     int* arr;
 
-private:
+protected:
     bool isFull(){
         if(top == size-1)
             return true;
