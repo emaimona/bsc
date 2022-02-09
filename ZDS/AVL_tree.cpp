@@ -85,21 +85,21 @@ public:
 
         int balancefactor = getBalancefactor(node);
 
-        if (balancefactor == -2){
-            balancefactor = getBalancefactor(node->right);
-            if(balancefactor == 0 || balancefactor == -1)
-                return leftRotate(node);
+        if (balancefactor == 2){
+            balancefactor = getBalancefactor(node->left);
+            if(balancefactor >= 0)
+                return righttRotate(node->left);
             else{
-                node = leftRotate(node);
+                node->left = leftRotate(node->left);
                 return righttRotate(node);
             }
         }
-        else {
-            balancefactor = getBalancefactor(node->left);
-            if(balancefactor == 0 || balancefactor == -1)
-                return righttRotate(node);
+        else if (balancefactor == -2){
+            balancefactor = getBalancefactor(node->right);
+            if(balancefactor <= 0)
+                return leftRotate(node->right);
             else{
-                node = righttRotate(node);
+                node->right = righttRotate(node->right);
                 return leftRotate(node);
             }
         }
@@ -431,7 +431,7 @@ int main(){
             case 3:
                 cout<<"Input the value of the node: ";
                 cin>> value;
-                bst.deleteNode(value);
+                bst.root = bst.deleteNodeRecursively(bst.root, value);
                 break;
             case 4:
                 bst.print2D(bst.root, 5);
@@ -452,7 +452,6 @@ int main(){
             case 6:
                 cout<<"Input the value of the node: ";
                 cin>> value;
-                bst.root = bst.deleteNodeRecursively(bst.root, value);
                 break;
             case 8:
                 system("clear");

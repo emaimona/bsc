@@ -54,6 +54,12 @@ vector<int> generate_array(int size){
     return array;
 }
 
+void generate_array(int array, int size){
+    srand(time(NULL));
+
+    for(int i = 0; i < size; i++)
+        array[i] = rand() % 50;
+}
 
 
 #endif
