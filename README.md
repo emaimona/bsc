@@ -2,5 +2,5 @@
 
 Basic algorithms for my instruction on the faculty
 
-__Coding for fun *_*
-_University of Pecs
+__Coding for fun *_*__
+_University of Pecs_
