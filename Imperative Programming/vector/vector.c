@@ -4,7 +4,7 @@
 
 
 bool v_isEmpty(vector* v) {
-    return v->size == 0;
+    return v->length == 0;
 }
 
 void v_init(vector* v) {
@@ -14,24 +14,18 @@ void v_init(vector* v) {
 }
 
 void v_destroy(vector *v) {
-    for (int i=0; i< v->length; i++)
-        free(v->items[i]);
-    
     free(v->items);
 }
 
 void v_insert(vector* v, int val){
-    int* data = (int*)malloc(sizeof(int));
-    *data = val;
-
     if (v_isEmpty(v)) {
         v->size++;
-        v->items = (int **) malloc(sizeof(int));
+        v->items = (int *) malloc(sizeof(int));
     } else if (v->length == v->size) {
         v->size *= 2;
-       v->items = (int **) realloc(v->items, sizeof(int*) * v->size);
+       v->items = (int *) realloc(v->items, sizeof(int) * v->size);
     }
-     v->items[v->length++] = data;
+     v->items[v->length++] = val;
 
 
 }
@@ -45,14 +39,14 @@ int v_length(vector* v) {
 
 int v_top(vector* v) {
     if (!v_isEmpty(v))
-        return *v->items[v->length-1];
+        return v->items[v->length-1];
 
     return INT16_MIN;  
 }
 
 int v_getIndex(vector* v, int val) {
     for (int i=0; i<v->length; i++) {
-        if (*v->items[i] == val)
+        if (v->items[i] == val)
             return i;
     }
 
@@ -73,8 +67,7 @@ int v_delete(vector* v, int val) {
 
 int v_pop(vector* v) {
     if (!v_isEmpty(v)) {
-        int val = *v->items[v->length - 1];
-        free(v->items[--v->length]);
+        int val = v->items[--v->length];
         return val;
     }
     return INT16_MIN;

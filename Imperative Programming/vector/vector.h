@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 typedef struct vector {
-    int** items;
+    int* items;
     int size;
     int length;
 } vector;
