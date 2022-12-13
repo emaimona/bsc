@@ -43,6 +43,39 @@ int v_length(vector* v) {
     return v->length;
 }
 
-void v_delete(vector* v, int val) {
+int v_top(vector* v) {
+    if (!v_isEmpty(v))
+        return *v->items[v->length-1];
 
+    return INT16_MIN;  
+}
+
+int v_getIndex(vector* v, int val) {
+    for (int i=0; i<v->length; i++) {
+        if (*v->items[i] == val)
+            return i;
+    }
+
+    return -1;
+}
+
+int v_delete(vector* v, int val) {
+    int index = v_getIndex(v, val);
+    if (index < 0)
+        return INT16_MIN; 
+
+    for (int i=index+1; i<v->length; i++) {
+        v->items[i-1] = v->items[i];
+    }
+    v_pop(v);
+    return val;
+}
+
+int v_pop(vector* v) {
+    if (!v_isEmpty(v)) {
+        int val = *v->items[v->length - 1];
+        free(v->items[--v->length]);
+        return val;
+    }
+    return INT16_MIN;
 }
