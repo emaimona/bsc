@@ -1,4 +1,8 @@
 *.exe
 *.out
+*.o
 *.vscode
-.cph
+*.cph
+checker-279
+*dSYM
+tempCodeRunnerFile*
