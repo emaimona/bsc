@@ -1,0 +1,3 @@
+class AlreadyContainedException extends Exception {
+    
+}

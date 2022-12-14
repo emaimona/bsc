@@ -5,4 +5,6 @@
 *.cph
 checker-279
 *dSYM
+.DS_*
 tempCodeRunnerFile*
+videos

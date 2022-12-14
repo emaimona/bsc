@@ -1,0 +1,11 @@
+ABC123:500
+DEF235:800
+DEDBEE:100
+JALOPY:10
+
+BadInput:200
+BadInp:
+BadInp:BadInput
+:400
+ :200
+BadInp:-500
