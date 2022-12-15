@@ -1,0 +1,11 @@
+The sun is shining.
+Hello Adam!
+What are you doing Sam?
+I am the longest gay here so let us see who wins
+19 year old I am
+I am the longest gay here so let us see who wins, kkk He said
+awk {print length, $0} in.dat
+awk '{print length, -bash}' in.dat | sort -nr | sed s/^[0-9]\+ //g | head -n 1
+awk '{print length, -bash}' in.dat | sort -nr | sed s/^[0-9]\+ //g | head -n 1
+dskja;lkfj;alskdjf;lasdkjf;laskdjf;laskjdf;lkasjd;flkjas;dlkfja;sldkjf;alskdjflaksdjf;lkasjddflasj
+mae eu sou
