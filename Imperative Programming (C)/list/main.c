@@ -18,5 +18,6 @@ int main() {
     if (!empty(&list))
         printf("The size of the list is: %d\n", size(&list));
     destroy(&list);
+    
     return 0;
 }
