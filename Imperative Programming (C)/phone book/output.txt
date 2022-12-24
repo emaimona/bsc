@@ -1,0 +1,17 @@
+
+*================ PHONE BOOK ENTRIES =================*
+
+TOTAL: 3
+
+Contact 1
+	Name: Emanuel
+	Phone number: 97453452
+
+Contact 2
+	Name: Maimona
+	Phone number: 53452452
+
+Contact 3
+	Name: Joseph
+	Phone number: 83452452
+
