@@ -6,6 +6,7 @@
 checker-279
 *dSYM
 .DS_*
+rle.h.gch
 tempCodeRunnerFile*
 videos
 not
