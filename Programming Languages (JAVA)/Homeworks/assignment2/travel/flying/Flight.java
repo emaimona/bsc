@@ -45,7 +45,6 @@ public class Flight {
     }
 
 
-    //* not */
     @Override
     public String toString() {
         return "Flying " + this.name + " with " + this.numberOfTravellers + " passengers to " + this.destinationCity + " on " + this.flightDayAndTime;

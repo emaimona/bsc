@@ -3,6 +3,7 @@
 *.o
 *.vscode
 *.cph
+*.class
 checker-279
 *dSYM
 .DS_*
