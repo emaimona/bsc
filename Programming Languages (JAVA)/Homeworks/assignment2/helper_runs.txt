@@ -1,0 +1,7 @@
+javac -cp .:junit5all.jar travel/DayAndTime.java travel/Destination.java travel/DestinationUtils.java travel/flying/Flight.java travel/flying/FlightWithManyPlanes.java travel/flying/Flyable.java travel/flying/Plane.java test/DayAndTimeTest.java test/DestinationUtilsTest.java test/flying/FlightWithManyPlanesTest.java
+
+Tests
+java -jar junit5all.jar -cp . -c test.flying.FlightWithManyPlanesTest
+java -jar junit5all.jar -cp . -c test.flying.PlaneTest
+java -jar junit5all.jar -cp . -c test.DayAndTimeTest
+java -jar junit5all.jar -cp . -c test.DestinationUtilsTest
