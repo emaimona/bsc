@@ -1,0 +1,7 @@
+LOVE
+PARIS
+45
+2021.12.22 at 04:30
+Airbus,12,150
+Tag,13,145
+Qatar,17,200
