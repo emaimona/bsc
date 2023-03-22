@@ -1,5 +1,5 @@
-with Ada.Text_IO;
-use Ada.Text_IO;
+with Ada.Text_IO, Ada.Strings.Fixed;
+use Ada.Text_IO, Ada.Strings.Fixed;
 
 package body lab2 is
 
@@ -55,19 +55,52 @@ package body lab2 is
 
 
     --
-    function reverse(str: String) return String is 
-        newStr : String := ""
+    function reverseNum(num: Natural) return Natural is 
+        rev : Natural := 0;
+        old : Natural := num;
     begin
 
-
-    end reverse;
+        while old /= 0 loop
+            rev := rev * 10 + old mod 10;
+            old := old / 10;
+        end loop;
+        
+        return rev;
+    end reverseNum;
 
 
     --
     function isPalindrome(num: Natural) return Boolean is 
 
     begin
-
+        return num = reverseNum(num);
     end isPalindrome;
+
+
+    -- 
+    function nthPower(base, exp : Natural) return Natural is
+        res : Natural := 1;
+    begin
+        if exp = 0 then
+            return 1;
+        end if;
+
+        for i in 1..exp loop
+            res := res * base;
+        end loop;
+
+        return res;
+    end nthPower;
+
+
+    -- 
+    function factorial(num : Positive) return Positive is
+    begin
+        if num = 1 then 
+            return 1;
+        end if;
+
+        return num * factorial(num - 1);
+    end factorial;
 
 end lab2;
