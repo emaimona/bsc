@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <limits>
 
 const std::string entryFileName = "entry.dat";
 const std::string applicantsFileName = "applicants.dat";
