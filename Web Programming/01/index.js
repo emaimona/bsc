@@ -23,7 +23,7 @@ console.log( arr.reduce( (sum , n) => (sum + n ), 0))
 
 
 // Maximum element
-console.log('The maximum element is' + arr.reduce( (bigger, n) => (n > bigger ? n : bigger), -Infinity))
+console.log('The maximum element is' + arr.reduce( (bigger, n) => (n > bigger ? n : bigger), -Infinity) )
 
 // spread operator
 console.log( Math.max(...arr))

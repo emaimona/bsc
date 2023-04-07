@@ -4,6 +4,8 @@
 *.vscode
 *.cph
 *.class
+*.venv
+*.zip
 checker-279
 *dSYM
 .DS_*

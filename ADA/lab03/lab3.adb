@@ -73,16 +73,16 @@ package body Lab3 is
         visited(i, j) := True;
         Put(Integer'Image(mat(i, j)) & " ");
 
-        for span in xdirections'Range loop
-            --  x := i + xdirections(span);
-            --  y := j + ydirections(span);
+        for span in 1..4 loop
+            x := i + xdirections(span);
+            y := j + ydirections(span);
 
-            --  if (x >= 1 and x <=row and y>=1 and y<=col) then
-            --      if ( not visited(x, y)) then
-            --          dfs(x, y, row, col, mat, visited);
-            --      end if;
-            --  end if;
-            Put( -s);
+            if (x >= 1 and then x <=row and then y>=1 and then y<=col) then
+                if ( not visited(x, y)) then
+                    dfs(x, y, row, col, mat, visited);
+                end if;
+            end if;
+            --Put( 5);
         end loop;
     end dfs;
 
