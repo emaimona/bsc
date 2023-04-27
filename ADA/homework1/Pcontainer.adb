@@ -33,14 +33,14 @@ package body PContainer is
     -- Methods 
     procedure modifyCost(c : in out Container; amount : in Float) is
     begin
-        c.Cost := c.Cost +amount;
+        c.Cost := c.Cost + amount;
     end modifyCost;
 
 
 
-    function calculateDistance(destination : StringLiteral; origin: TCompany) return Integer is
+    function calculateDistance(destination : StringLiteral; loaded_at : in StringLiteral) return Integer is
     begin    
-        return abs( Length(destination) - TCompany'Image(origin)'Length);
+        return abs( Length(destination) - Length(loaded_at));
     end calculateDistance;
 
 
@@ -54,17 +54,17 @@ package body PContainer is
     end printJSON;
 
 
-    procedure createContainer(destination : StringLiteral; sendingCompany : TCompany; isPremium : Boolean; c : out Container) is 
+    procedure NewContainer(loaded_at : in StringLiteral; destination : StringLiteral; sendingCompany : TCompany; isPremium : Boolean; c : out Container) is 
         distance : Integer;
         premium : Float;
         value : Float := Float(sendingCompany'Enum_rep);
     begin
         if isPremium then premium := 1.0; else premium := 0.0; end if;
-        distance := calculateDistance(destination, sendingCompany);
+        distance := calculateDistance(destination, loaded_at);
 
         c.Cost := value * 1.0/6.0+ Float(distance) * 5.0 + premium*3.0;
         c.destination := destination;
         c.SendingCompany := sendingCompany;
         c.isPremium := isPremium;
-    end createContainer;
+    end NewContainer;
 end PContainer;

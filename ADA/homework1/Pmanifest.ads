@@ -21,8 +21,8 @@ package PManifest is
    procedure printManifestJSON(m : in Manifest);
    
    generic
-      with function getCost(item : Elem) return Float;
-      with function getDestination(item : Elem) return StringLiteral;
+      with function Getter(item : Elem) return Float;
+      with function Cond(item : Elem; destination : StringLiteral) return Boolean;
    procedure unloadCargo(destination: StringLiteral; m : in out Manifest);
 
 

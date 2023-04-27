@@ -17,11 +17,11 @@ procedure demo is
 
     -- generic functions
     procedure printAllCargos is new IManifest.ForEach(printJSON);
-    function getCargoDestination( c: Container) return IManifest.StringLiteral is
+    function HasCargoDestination( c: Container; destination : IManifest.StringLiteral) return Boolean is
     begin
-        return IManifest.StringLiteral(PContainer.getDestination(c));
-    end getCargoDestination;
-    procedure unloadCargoManifest is new IManifest.unloadCargo(getCost, getCargoDestination);
+        return PContainer.getDestination(c) = StringLiteral(destination);
+    end HasCargoDestination;
+    procedure unloadCargoManifest is new IManifest.unloadCargo(getCost, HasCargoDestination);
 
     manifest : IManifest.Manifest(10);
     name_manifest : IManifest.StringLiteral := IManifest.To_Unbounded_String("Ada Manifest");
@@ -32,11 +32,11 @@ procedure demo is
 begin
     New_line;
     -- Creating Cargos
-    createContainer(c_country1, DHL, True,  cargo1);
-    createContainer(c_country2, Maersk, False,  cargo2);
-    createContainer(c_country3, PIL, True,  cargo3);
-    createContainer(c_country1, MSC, True,  cargo4);
-    createContainer(c_country2, CosCo, True,  cargo5);
+    NewContainer(c_country3, c_country1, DHL, True,  cargo1);
+    NewContainer(c_country3, c_country2, Maersk, False,  cargo2);
+    NewContainer(c_country1, c_country3, PIL, True,  cargo3);
+    NewContainer(c_country2, c_country1, MSC, True,  cargo4);
+    NewContainer(c_country1, c_country2, CosCo, True,  cargo5);
 
 
     -- Testin Container methods
@@ -54,6 +54,7 @@ begin
     Put_Line("===== Creating manifest ======");
     IManifest.createManifest(name_manifest, 12.0, 0.0, manifest);
     IManifest.printManifestJSON(manifest);
+
 
      -- Adding cargos
     New_line;
@@ -104,8 +105,11 @@ begin
     New_Line;
 
     -- Recording trip
-    Put_Line("Recording the trip...");
-    IManifest.recordTrip(m_country1, m_country2, 300.5, manifest);
+    Put_Line("Recording the trip at 0.007 of Speed");
+    IManifest.recordTrip(m_country1, m_country2, 0.07, manifest);
+
+    Put_Line("Recording the trip at 30.0 of Speed");
+    IManifest.recordTrip(m_country1, m_country2, 30.0, manifest);
     IManifest.printManifestJSON(manifest);
     New_Line;
     New_Line;

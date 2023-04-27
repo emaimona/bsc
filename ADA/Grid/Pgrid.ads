@@ -2,8 +2,8 @@
 
 generic
     type Index is (<>);
-    type Matrix is array (Index range <>, Index range <>) of Natural;
-    with function "<" (a: Index; b: Index) return Boolean is <>;
+    type Grid is array (Index range <>, Index range <>) of Natural;
+    --  with function "<" (a: Index; b: Index) return Boolean is <>;
 
 package Pgrid is 
     type grid(n:Index; m:Index) is limited private;

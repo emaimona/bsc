@@ -17,10 +17,10 @@ package PContainer is
     -- Methods
 
     procedure modifyCost(c : in out Container; amount : in Float);
-    function calculateDistance(destination : in StringLiteral; origin : in TCompany) return Integer;
+    function calculateDistance(destination : in StringLiteral; loaded_at : in StringLiteral) return Integer;
     procedure printJSON(c : in Container);
 
-    procedure createContainer(destination : in StringLiteral; sendingCompany : in TCompany; isPremium : in Boolean; c : out Container);
+    procedure NewContainer(loaded_at: in StringLiteral; destination : in StringLiteral; sendingCompany : in TCompany; isPremium : in Boolean; c : out Container);
 
 private
     type Container is record

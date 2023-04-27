@@ -40,14 +40,17 @@ package body PManifest is
     -- Out to calculate the time
     procedure recordTrip(origin : in StringLiteral; destination : in StringLiteral; Speed : in Float; m : in out Manifest) is 
         fuelUsed : Float;
+        fuelNeeded : Float := (abs(Float(Length(origin) - Length(destination)) / speed)) * 2.0;
     begin
-        fuelUsed := Float(m.Fuel) - abs(Float(Length(origin) - Length(destination)) / speed * 2.0);
+        fuelUsed := Float(m.Fuel) - fuelNeeded;
 
         if fuelUsed <= 0.0 then
-            m.Fuel := FuelLevel'first;
+            Put("-> Low on fuel, the travel cannot be done!");
         else
             m.Fuel := FuelLevel(fuelUsed);
+             Put("-> The travel has occurred!");
         end if;
+        New_Line;
     end recordTrip;
 
 
@@ -67,8 +70,8 @@ package body PManifest is
    procedure unloadCargo(destination: StringLiteral; m : in out Manifest) is 
    begin
         for i in m.Cargo'Range loop
-            if getDestination(m.Cargo(i)) = destination then
-                m.Revenue := m.Revenue + getCost(m.Cargo(i));
+            if Cond(m.Cargo(i), destination) then
+                m.Revenue := m.Revenue + Getter(m.Cargo(i));
                 if Index'succ(i) /= m.Pointer then
                     for j in Index'succ(i)..m.Pointer loop
                         m.Cargo(Index'Pred(j)) := m.Cargo(j);
