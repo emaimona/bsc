@@ -25,3 +25,5 @@ const greenConnections = connections.filter(cities => cities.color == 'green')
 const sum = greenConnections.reduce((acc, val) => acc + val.elements.length, 0)
 task4.innerHTML = sum / greenConnections.length
 
+confetti.start(1200)
+

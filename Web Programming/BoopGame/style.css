@@ -3,10 +3,11 @@
     --mouse_over: #dfe;
     --mattress: rgb(38 79 138);
 }
+
+
 * {
-    margin: 0;
-    padding: 0;
     font-family: 'Gamja Flower', cursive;
+    font-size: 1.05rem;
 }
 
 img {
@@ -14,23 +15,21 @@ img {
 }
 
 body {
-    /* background: url('assets/img/bg1.jpg') 50%; */
-    /* background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: cover; */
-    /* display: flex; */
-    /* flex-direction: column; */
+
     height: 100vh;
 }
 
-.container {
+._container {
+    margin: 0 !important;
+    padding: 0 !important;
     display: flex;
     height: 97vh;
+    width: 100vw;
     flex-direction: row;
 }
 
 .left, .right {
-    width: 30vw;
+    /* width: 25%; */
 }
 
 .left, .left_border, .right, .right_border {
@@ -66,10 +65,14 @@ body {
 
 
 .left_border, .right_border {
-    width: 20rem;
-    height: 20rem;
+    border: 20px solid rgba(16, 62, 170, .3);
+    width: 23rem;
+    height: 23rem;
     background-color:rgb(38 79 138);
+}
 
+.focusPlayer {
+    border-color: rgb(128 134 138);
 }
 
 .kitten {
@@ -82,33 +85,47 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50vw;
+    width: 50%;
     height: 100%;
 }
 
-table {
+
+.tableBoard table {
+    border-radius: 1rem;
     background-color: var(--mattress);
     border-collapse: collapse;
-    /* background-image: url('assets/img/matress.jpg'); */
-    width: 100%;
-    height: 100%;
-}
-table td {
-    border: 3px solid #ddd;
-    text-align: center;
-    vertical-align: center;
-    width: 5rem;
-    height: 5rem;
+
 }
 
-table td:hover {
+.tableBoard table td {
+    border: 1px solid white;
+    text-align: center;
+    vertical-align: center;
+    height: 70px !important;
+    min-width: 70px !important;
+}
+
+.tableBoard table td:hover {
     background-color: var(--mouse_over);
 }
-/* 
-table img {
-    width: inherit;
-    height: inherit;
-} */
+
+.tableBoard table img {
+    width: 68px;
+    height: 68px;
+    padding: 0;
+    margin: 0;
+}
+
+.tableBoard div {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.tableBoard div button {
+    margin: 0 6px 0 6px;
+}
 
 footer {
     background-color: white;
@@ -119,4 +136,51 @@ footer {
 
 .highlight {
     background-color: var(--mouse_over);
+}
+
+.toBePushed {
+    background-color: rgba(121, 80, 80, .5);
+}
+
+
+.card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: absolute;
+    width: 35rem;
+    padding: 0 10px 0 10px;
+    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color:rgba(0, 0, 0, 0.1)
+}
+
+span {
+    font-size: 3.8rem;
+}
+
+span#winner {
+    font-size: 3rem;
+}
+
+h1 {
+    font-size: 4rem;
+    line-height: 3.5rem;
+}
+h2 {
+    font-size: 3.5rem;
+}
+h3 {
+    font-size: 3rem;
+}
+h4 {
+    font-size: 2.5rem;
+}
+
+
+p {
+    font-size: 1.5rem;
 }

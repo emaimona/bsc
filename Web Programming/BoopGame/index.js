@@ -1,6 +1,14 @@
+const gamesResults = loadGameResult()
+
+// windows
+const startGame = document.querySelector('.gameBegin')
+const endGame = document.querySelector('.gameEnd')
 
 // Constants
-const table = document.querySelector('table')
+const table = document.querySelector('.tableBoard table')
+const lastGamesTable = document.querySelector('.lastGamesTable')
+const lastGamesTBody = document.querySelector('.lastGamesTable tbody')
+
 const orange_reserve = document.querySelector('.orange_reserve')
 const gray_reserve = document.querySelector('.gray_reserve')
 const orange_points = document.querySelector('.orange_points')
@@ -8,19 +16,34 @@ const gray_points = document.querySelector('.gray_points')
 const leftBoard = document.querySelector('.left_border')
 const rightBoard = document.querySelector('.right_border')
 
+const center = document.querySelector('.center')
+const left = document.querySelector('.left')
+const right = document.querySelector('.right')
+
+const form = document.querySelector('form')
+const btnContinueLastGame = document.querySelector('#continue')
+const btnStartGame = document.querySelector('#star')
+const btnRestartGame = document.querySelector('#restart')
+const btnReload = document.querySelector('#reload')
+const btnNewGame = document.querySelector('#new_game')
+const btnStartNewGame = document.querySelector('#start_new_game')
+const btnSaveGame = document.querySelector('#start_new_game')
+
+//config
+const player1 = document.querySelector('#player1')
+const player2 = document.querySelector('#player2')
+const row_size = document.querySelector('#row_size')
+const col_size = document.querySelector('#col_size')
+const win_value = document.querySelector('#win_value')
+const nbr_kittens = document.querySelector('#nbr_kittens')
+
+//
+const winner = document.querySelector('#winner')
 
 
 
-// const a = document.querySelectorAll('.left_border *')
-// console.log(a)
 // Functions
 
-function xyCoord(td) {
-    return {
-        x: td.parentNode.rowIndex,
-        y: td.cellIndex,
-    };
-}
 
 function delegate(parent, type, selector, handler) {
     parent.addEventListener(type, function(event) {
@@ -30,34 +53,15 @@ function delegate(parent, type, selector, handler) {
     })
 }
 
-// variables
-const WIN_VALUE = 5
-let numberOfRows = 6
-let numberOfColumns = 6
-let count_OrangeReserve = 8
-let count_GrayReserve = 8
-let count_OrangePoints = 0
-let count_GrayPoints = 0
-let gameState = 0// 0 - start
-let player = Math.round(Math.random()) + 1 // 1 - OrangeCat, 2 - GrayCat
-let beingDragged
 
-// 0 - Empty, 1 - Orange, 2 - GrayCat
-let boardGame = [
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0],
-]
-// const kitten = {
-//     x: -1,
-//     y: -1,
-//     color: 'gray',
-//     img: new Image(),
-//     onBoard: false, // onTheBoard
-// };
+function updateLabels() {
+    orange_points.innerText = count_OrangePoints
+    orange_reserve.innerText = count_OrangeReserve
+
+    gray_points.innerText = count_GrayPoints
+    gray_reserve.innerText = count_GrayReserve
+}
+
 
 function createKitten(_player, isDraggable) {
     const kitten = document.createElement('img');
@@ -76,100 +80,13 @@ function createKitten(_player, isDraggable) {
     return kitten;
 }
 
-function nextPlayer() {
-    // pushKittens()
-    if (player == 1)
-        player = 2
-    else
-        player = 1
-    changePlayerBackground() //*
-}
-
-function isGameLost(){
-    return count_GrayReserve == 0 || count_GrayReserve == 0
-}
-
-function getLoser() { // Only if the game is lost
-    if (count_GrayReserve == 0 || count_GrayPoints < WIN_VALUE)
-        return 2
-    else
-        return 1
-}
-
-function getWinner() {
-    if (count_GrayPoints == WIN_VALUE)
-        return 2
-    
-    return 1
-}
-
-function isGameWon() { //*
-    return count_GrayPoints == WIN_VALUE || count_OrangePoints == WIN_VALUE || isGameLost()
-}
-
-function gameScored() { //* 3 kittens in row
-
-} 
-
-function updateState() {
-    if(gameScored() && gameWin()) {
-        //*
-    } else if (isGameLost()) {
-        //*
-    }
-}
-
-function updateLabels() {
-    orange_points.innerText = count_OrangePoints
-    orange_reserve.innerText = count_OrangeReserve
-
-    gray_points.innerText = count_GrayPoints
-    gray_reserve.innerText = count_GrayReserve
-}
-
-function changePlayerBackground() { //* - to implement
-    
-}
-
-function isInsideBoardGame(x, y) {
-    if (x >= 0 && x < numberOfRows && y >= 0 && y < numberOfColumns)
-        return true
-    return false
-}
-
-function pushKittens(coord) {
-    for (let i = -1; i <=1; i++) {
-        for (let j = -1; j <=1; j++) {
-            if  (i == 0 && j == 0) 
-                continue;
-            let x = coord.x + i
-            let y = coord.y + j
-            if (isInsideBoardGame(x, y) && boardGame[x][y] != 0) {
-                if (isInsideBoardGame(x + i, y + j) && boardGame[x + i][y + j] == 0) { // if the new position is inside the board then move the Kitten
-                    boardGame[x + i][y + j] = boardGame[x][y]
-                    boardGame[x][y] = 0
-                } else if (!isInsideBoardGame(x + i, y + j)){ // else move the reservce
-                    if (boardGame[x][y] == 1) {
-                        count_OrangeReserve++
-                    } else {
-                        count_GrayReserve++;
-                    }
-                    boardGame[x][y] = 0
-                }
-            }
-        }
-    }
-    
-}
-
 function fillBoardGame() {
-    const tds = document.querySelectorAll('td')
+    const tds = document.querySelectorAll('.tableBoard td')
     for (let i=0; i<tds.length; i++) {
         const row = Math.floor(i / numberOfColumns)
         const col = Math.floor(i % numberOfColumns)
         const val = boardGame[row][col]
         
-        // console.log({row, val}, val)
         if (tds[i].firstElementChild){
             tds[i].removeChild(tds[i].firstElementChild)
         }
@@ -178,6 +95,24 @@ function fillBoardGame() {
         }
     }
 }
+
+
+function addBackgroundToThePlacesTwoBePushed(list) {
+    const tds = document.querySelectorAll('.tableBoard td')
+    for (let i=0; i<tds.length; i++) {
+        const row = Math.floor(i / numberOfColumns)
+        const col = Math.floor(i % numberOfColumns)
+        for (coord of list) {
+            if (row == coord.x && col == coord.y) {
+                tds[i].classList.add('toBePushed')
+                setTimeout(() => {
+                    tds[i].classList.remove('toBePushed')
+                  }, 1500);
+            }
+        }
+    }
+}
+
 
 function fillKittensReserve(_player, _reserveCounter) {
     let board;
@@ -207,26 +142,59 @@ function isDropOkay() {
     return false
 }
 
-function isPlaceVacant(coord) {
-    return boardGame[coord.x][coord.y] == 0
+function generateTable() { // Based on the newly create values
+    table.innerHTML = '' // Clean table
+    for (let i = 0; i < numberOfRows; i++) {
+            let tr ='<tr>'
+            for (let j =0; j < numberOfColumns; j++) {
+                tr+='<td></td>'
+            }
+            tr+= '</tr>'
+            table.innerHTML += tr
+    }
 }
 
-function placeKitten(coord) {
-    if (!isPlaceVacant(coord)) {
-        return false
-    } 
-    if (player == 1) {
-        fillKittensReserve(1, --count_OrangeReserve)
-    } else {
-        fillKittensReserve(2, --count_GrayReserve)
+function processInformation() {
+    WIN_VALUE = +win_value.value
+    numberOfRows = +row_size.value
+    numberOfColumns = +col_size.value
+    count_OrangeReserve = +nbr_kittens.value
+    count_GrayReserve = +nbr_kittens.value
+    count_OrangePoints = 0
+    count_GrayPoints = 0
+    gameState = 1
+    player = Math.round(Math.random()) + 1
+
+    boardGame = []
+    boardGame = Array(numberOfRows).fill().map(() => Array(numberOfColumns).fill(0));
+
+    generateTable()
+}
+
+function saveGameResultData() {
+    gamesResults.push({
+        player1 : player1.value,
+        player2 : player2.value,
+        player1_points : count_OrangePoints,
+        player2_points : count_GrayPoints,
+        points_required_to_win : WIN_VALUE,
+        data_time : new Date().toISOString(),
+    })
+    saveGameResult(gamesResults)
+}
+
+function updateState() {
+    if((gameScored() && isGameWon()) || isGameLost()) {
+        showGameOver()
+    }
+}
+
+
+function processGame(restart) {
+    if (restart) {
+        processInformation() // restart
     }
 
-    boardGame[coord.x][coord.y] = player
-    pushKittens(coord)
-    return true
-}
-
-function processGame() {
     updateState()
     updateLabels()
     fillBoardGame() 
@@ -235,25 +203,36 @@ function processGame() {
     nextPlayer()
 }
 
+function restartGame() {
+    gameState = 1
+    processGame(true)
+    hideGameOver()
+    showGame()
+}
+
+function newGame() {
+    gameState = 1
+    hideGameOver()
+    ShowStartMenu()
+
+}
 // Utilities 
-//* Starting configurations
-fillBoardGame() 
-fillKittensReserve(1, count_OrangeReserve)
-fillKittensReserve(2, count_GrayReserve)
-updateLabels()
+
 
 
 // Methods
 delegate(table, 'click', 'td', function(e) {
     const coordinates = xyCoord(this)
-
     if (placeKitten(coordinates)) {
         processGame()        
     } 
-    // console.log(boardGame)
-    console.log('Player', player)
-    console.log(coordinates)
 })
+
+delegate(table, 'mouseover', 'td', function(e) {
+    addBackgroundToThePlacesTwoBePushed(getListOfKittenToPushed(xyCoord(this)))
+})
+
+
 
 
 // Handling Drag and Drop
@@ -262,6 +241,8 @@ table.addEventListener('dragover', (e) => {
 })
 
 delegate(table, 'dragenter', 'td', function(e) {
+    if (beingDragged)
+        addBackgroundToThePlacesTwoBePushed(getListOfKittenToPushed(xyCoord(this)))
     this.classList.add('highlight')
 })
 delegate(table, 'dragleave', 'td', function(e) {
@@ -269,15 +250,10 @@ delegate(table, 'dragleave', 'td', function(e) {
 })
 
 delegate(table, 'drop', 'td', function(e) {
-    
     const coordinates = xyCoord(this)
-
     if (beingDragged && placeKitten(coordinates)) {
         processGame()
     } 
-    console.log('Player', player)
-    console.log(coordinates)
-
     this.classList.remove('highlight')
 })
 
@@ -291,7 +267,132 @@ leftBoard.addEventListener('dragstart', (e) => {
 rightBoard.addEventListener('dragstart', (e) => {
     if (player == 2) { // His time to play
         beingDragged = e.target
-        console.log('Drag and Drop')
     } else
         beingDragged = null
 })
+
+
+// Starting form
+
+form.addEventListener('submit', (e)=> {
+    e.preventDefault() 
+    processGame(true)
+    hideStartMenu()
+    showGame()
+}) 
+
+
+btnContinueLastGame.addEventListener('click', () => {
+    latestGameData = loadAllGameData()
+    WIN_VALUE = latestGameData.WIN_VALUE
+    numberOfRows = latestGameData.numberOfRows
+    numberOfColumns = latestGameData.numberOfColumns
+    count_OrangeReserve = latestGameData.count_OrangeReserve
+    count_GrayReserve = latestGameData.count_GrayReserve
+    count_OrangePoints = latestGameData.count_OrangePoints
+    count_GrayPoints = latestGameData.count_GrayPoints
+    gameState = latestGameData.gameState
+    player= latestGameData.player
+    boardGame = latestGameData.boardGame
+
+    generateTable()
+    processGame()
+    hideStartMenu()
+    showGame()
+})
+
+btnSaveGame.addEventListener('click', () => {
+    saveAllGameData({
+        WIN_VALUE,
+        numberOfRows,
+        numberOfColumns,
+        count_OrangeReserve,
+        count_GrayReserve,
+        count_OrangePoints,
+        count_GrayPoints,
+        gameState,
+        player : player == 1 ? 2 : 1,
+        boardGame,
+    })
+})
+
+
+btnReload.addEventListener('click', restartGame)
+
+btnRestartGame.addEventListener('click', restartGame) 
+
+btnNewGame.addEventListener('click', newGame)
+
+btnStartNewGame.addEventListener('click', () => {
+    hideGame()
+    newGame()
+
+})
+
+function hideGame() {
+    right.style.display = 'none'
+    left.style.display = 'none'
+    center.style.display = 'none'
+}
+
+function showGame() {
+    playStartSong()
+    gameState = 1
+    left.style.display = 'flex'
+    right.style.display = 'flex'
+    center.style.display = 'flex'
+}
+
+function hideStartMenu() {
+    startGame.style.display = 'none'
+}
+
+function ShowStartMenu() {
+    const latestGameData = loadAllGameData()
+    if (!latestGameData) {
+        btnContinueLastGame.disabled = true
+    } else {
+        btnContinueLastGame.disabled = false
+    }
+
+    while (lastGamesTBody.firstElementChild)
+        lastGamesTBody.removeChild(lastGamesTBody.firstElementChild)
+    // Insert the last data
+    for (info of gamesResults.slice(-3)) {
+        lastGamesTBody.innerHTML = `<tr> 
+                            <td>${info.player1}</td> 
+                            <td>${info.player2}</td> 
+                            <td>${new Date(info.data_time).toLocaleDateString()}</td>
+                             <td>${info.player1_points} - ${info.player2_points}</td> 
+                             </tr>` + lastGamesTBody.innerHTML 
+    }
+    
+    startGame.style.display = 'flex'
+}
+
+
+
+function showGameOver() {
+    saveGameResultData()
+
+    playGameWonSong()
+
+    gameState = 2
+    hideGame()
+    winner.innerHTML = count_GrayPoints == WIN_VALUE ? player1.value : player2.value
+    endGame.style.display = 'flex'
+}
+
+function hideGameOver() {
+    endGame.style.display = 'none'
+}
+
+
+
+
+//* Starting configurations
+
+hideGame()
+hideGameOver()
+ShowStartMenu()
+
