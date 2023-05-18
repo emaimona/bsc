@@ -4,7 +4,7 @@
 #include <errno.h>   //perror
 #include <unistd.h>  //fork
 #include <sys/ipc.h>   //semaphor
-#include <wait.h>  //wait
+#include <sys/wait.h>  //wait
 #include <sys/sem.h> //semaphor
 #include <sys/types.h>//semaphor
 #include <sys/stat.h> //S_IRUSR

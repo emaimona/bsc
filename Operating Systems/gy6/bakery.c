@@ -8,7 +8,9 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
-#include <wait.h>
+#include <sys/wait.h>
+#include <sys/time.h>
+
 // posix semaphor requires to link: cc -pthread bakery.c
 #define MEMSIZE 1024
 int *s;

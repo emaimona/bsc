@@ -7,9 +7,18 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include <wait.h>
+#include <sys/wait.h>
 #include <sys/time.h>
 #include <time.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>  //fork
+#include <sys/wait.h> //waitpid
+#include <errno.h> 
 /*
 union sigval {
    int   sival_int;  // the data is int, sent by a signal

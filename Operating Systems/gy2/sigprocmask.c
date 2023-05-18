@@ -2,6 +2,11 @@
 #include <stdio.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>  //fork
+#include <sys/wait.h> //waitpid
+#include <errno.h> 
 
 void handler(int signumber){
   printf("Signal with number %i has arrived\n",signumber);

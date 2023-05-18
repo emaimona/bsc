@@ -3,6 +3,15 @@
 #include <stdio.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>  //fork
+#include <sys/wait.h> //waitpid
+#include <errno.h> 
 
 void handler(int signumber){
   printf("Signal with number %i has arrived\n",signumber);
@@ -30,7 +39,7 @@ int main(){
  //real time signals between SIGRTMIN - SIGRTMAX 32-64
  //Several delivery
  //************************************************  
-  sigaction(SIGRTMIN,&sigact,NULL);
+  sigaction(SIGUSR2,&sigact,NULL);
  
   pid_t child=fork();
   if (child>0)
@@ -42,7 +51,7 @@ int main(){
   }
   else 
   {
-    printf("Waits 1 seconds, then send 5 SIGUSR %i signals and 5 SIGRTMIN %i signals \n", SIGUSR1,SIGRTMIN);
+    printf("Waits 1 seconds, then send 5 SIGUSR %i signals and 5 SIGRTMIN %i signals \n", SIGUSR1,SIGUSR2);
     //real time signals are between SIGRTMIN and SIGRTMAX
     //the smalest real time signal will be executed first
     //the execution order of normal signals is not predefined
@@ -53,7 +62,7 @@ int main(){
     int i;
     for (i=0;i<5;i++){
       kill(getppid(),SIGUSR1);
-      kill(getppid(),SIGRTMIN);
+      kill(getppid(),SIGUSR2);
 //      sleep(2);  //if sleep is working, then sigusr1 has done before the next call performs
     }
     printf("Child process ended\n");  

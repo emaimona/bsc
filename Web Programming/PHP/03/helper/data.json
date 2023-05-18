@@ -1,0 +1,32 @@
+{
+    "0": {
+        "name": "John",
+        "year": 2023,
+        "height": 150,
+        "student": true
+    },
+    "1": {
+        "name": "Anna",
+        "year": 2023,
+        "height": 150,
+        "student": true
+    },
+    "2": {
+        "name": "Emanuel",
+        "year": 2001,
+        "height": 150,
+        "student": true
+    },
+    "4": {
+        "name": "Upol",
+        "year": 2002,
+        "height": 201,
+        "student": true
+    },
+    "5": {
+        "name": "Zsombor",
+        "year": 2001,
+        "height": 183,
+        "student": false
+    }
+}

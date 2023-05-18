@@ -9,19 +9,16 @@
 
 struct messg { 
      long mtype;//this is a free value e.g for the address of the message
-     char mtext [ 1024 ]; //this is the message itself
+     int mtext; //this is the message itself
 }; 
 
-
-
 // sendig a message
-int send( int mqueue, int id, char* data) 
+int send( int mqueue, int val ) 
 { 
-     const struct messg m = { id, ""};
-     strcat(m.mtext, data);
+     const struct messg m = { 5, val }; 
      int status; 
      
-     status = msgsnd( mqueue, &m, strlen ( m.mtext ) + 1 , 0 ); 
+     status = msgsnd( mqueue, &m, sizeof(int) , 0 ); 
 	// a 3rd parameter may be : sizeof(m.mtext)
      	// a 4th parameter may be  IPC_NOWAIT, equivalent with  0-val 
      if ( status < 0 ) 
@@ -30,7 +27,7 @@ int send( int mqueue, int id, char* data)
 } 
      
 // receiving a message. 
-int receive( int mqueue, int id ) 
+int receive( int mqueue ) 
 { 
      struct messg m; 
      int status; 
@@ -38,12 +35,12 @@ int receive( int mqueue, int id )
 	// if it is 0, then we read the first one
 	// if  >0 (e.g. 5), then message type 5 will be read
 	 
-     status = msgrcv(mqueue, &m, 1024, id, 0 ); 
+     status = msgrcv(mqueue, &m, 1024, 5, 0 ); 
      
      if ( status < 0 ) 
           perror("msgsnd error"); 
      else
-          printf( "The code of the message is : %ld, text is:  %s\n", m.mtype, m.mtext ); 
+          printf( "The code of the message is : %ld, text is:  %d\n", m.mtype, m.mtext ); 
      return 0; 
 } 
 
@@ -56,7 +53,8 @@ int main (int argc, char* argv[]) {
      //. 
      key = ftok(argv[0],1); 
      printf ("The key: %d\n",key);
-     messg = msgget( key, 0600 | IPC_CREAT );  //* Creating a message queue, which return a message identifier
+     messg = msgget( key, 0600 | IPC_CREAT ); 
+
      if ( messg < 0 ) { 
           perror("msgget error"); 
           return 1; 
@@ -64,9 +62,7 @@ int main (int argc, char* argv[]) {
      
      child = fork(); 
      if ( child > 0 ) { 
-          receive(messg, 0);
-          // send( messg, 1, "How are you today" );  // Parent sends a message. 
-
+          send( messg, 134 );  // Parent sends a message. 
           wait( NULL ); 
           // After terminating child process, the message queue is deleted. 
           status = msgctl( messg, IPC_RMID, NULL ); 
@@ -74,9 +70,7 @@ int main (int argc, char* argv[]) {
                perror("msgctl error"); 
           return 0; 
      } else if ( child == 0 ) { 
-          send(messg, "I am ready to receive a message");
-          // receive( messg, 1); 
-          // wait( NULL ); 
+          return receive( messg ); 
           // The child process receives a message. 
      } else { 
           perror("fork error"); 
@@ -85,11 +79,3 @@ int main (int argc, char* argv[]) {
      
      return 0; 
 } 
-
-
-/* 
-     ipcs - list ipcs
-     ipcrm -q 3     remove from queue with id 3
-
-
-*/

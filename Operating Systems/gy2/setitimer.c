@@ -14,7 +14,7 @@ void handleralarm(int signalnumber){
 void handlersetitimer(int signalnumber)
 { count++;
   printf("The program was alarmed by setitimer the %i. time\n",count);
-  if (count==5) {
+  if (count==50) {
     timer.it_interval.tv_sec=0; /* it will be stopped */
     timer.it_interval.tv_usec=0;
     

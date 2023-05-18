@@ -53,7 +53,8 @@ int main (int argc, char* argv[]) {
      //. 
      key = ftok(argv[0],1); 
      printf ("The key: %d\n",key);
-     messg = msgget( key, 0600 | IPC_CREAT );  //* Creating a message queue, which return a message identifier
+     messg = msgget( key, 0600 | IPC_CREAT ); 
+
      if ( messg < 0 ) { 
           perror("msgget error"); 
           return 1; 
@@ -62,7 +63,6 @@ int main (int argc, char* argv[]) {
      child = fork(); 
      if ( child > 0 ) { 
           send( messg );  // Parent sends a message. 
-
           wait( NULL ); 
           // After terminating child process, the message queue is deleted. 
           status = msgctl( messg, IPC_RMID, NULL ); 
@@ -79,11 +79,3 @@ int main (int argc, char* argv[]) {
      
      return 0; 
 } 
-
-
-/* 
-     ipcs - list ipcs
-     ipcrm -q 3     remove from queue with id 3
-
-
-*/
