@@ -1,0 +1,2 @@
+The are 73 valid votes and 127 invalid votes.
+The percentage is 36%

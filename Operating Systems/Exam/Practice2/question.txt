@@ -1,0 +1,26 @@
+2. SPRING is here, birds are singing, animals of forests and meadows are reviving from the winter
+sleep. Our experience is that the number of the rabbits is reduced though we know "Rabbit is the
+strongest animal on the earth!". Due to create a rescuing plan we need to know the territorial
+distribution of them. The result of the "Let's observe one more rabbit" action is stored in a file.
+We store the following data as the result of one observation: observing_personname,
+
+territory_name, rabbit_number, rabbit_age, observation_time. We can distinguish three rabbit-
+age during the observation: young rabbit, adult rabbit and old rabbit. The time of observation
+
+should be added automatically at the moment of data input! There is a great need of observing
+rabbits further (mainly during Eastern), so we automate our observations. The trustee of the
+Ministry (parent program) decides to organize rabbit observation expeditions (children
+programs)!
+a) The trustee (the parent) gets the number of expeditions and the length of rabbit observation
+time through command line arguments. When the expeditions (the children) arrive to the
+observation area they send a signal to the parent, that they have arrived.
+b) After the parent gets the arrived signal from each of the children, the parent sends an
+identification text to them (like lion, bear, wolf etc.) through a signal or a pipe. The
+expedition (all of them) writes out the identification text and signs back to the parent that
+the expedition with the given identification text is ready to work.
+c) After the above mentioned identification process, the expeditions start their observations.
+They observe each rabbit type (young, adult, old) and time by time (randomly 2, 3, 4 or 5
+seconds) they send the result and the identification text to the parent through a message
+queue. The parent save the data into the database.
+d) The parent may call back some of the tired expeditions randomly, but the others should
+continue their work till the end of observation time.

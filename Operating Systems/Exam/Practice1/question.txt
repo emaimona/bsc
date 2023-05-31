@@ -1,0 +1,16 @@
+The 4th package contains a previous exam task. Please, practice to prepare yourself for the exam:
+
+Task. In an electoral district, the electoral committee is made up of 3 members: the chairperson (parents) and two members (children). The first child checks the voters' details and the second one stamps and issues the ballot paper.
+1) The chairman waits until both members indicate that they are ready to work (by signalling), then reads out how many voters there are (how many are received) via the command line arguments. The parent generates a random ID number (1-100) for each voter! The voters' ID numbers are passed through a pipe to the "data validator member", which declares that it has received the data and prints it to the screen. The parent waits for the children to finish. 
+
+ 
+
+2) The "data validator" member performs a data check for voter identification. All identifiers have a 20% chance of being incorrect. A voter with an incorrect ID cannot vote. The child who is doing the check thus pipes the data into the vote/no vote indicator and sends a signal to his/her sibling who is handling the ballot, who writes it on the screen. The sibling handling the ballot papers makes a total, gives the number of valid/invalid voters, and then sends this total to the parent via a message queue, who makes a record (percentage of valid/invalid) in a text file. The parent also prints this on the screen. 
+
+ 
+
+3) The voter with valid documents, is given a ballot paper, then votes (in child 2). From the possible parties (4,5,6 can be anything, constant) he/she chooses one at random, then writes the result in the shared memory, and sends a signal to the chairman of the committee. The result of the vote is read out and announced (announced) by the parent from here. 
+
+ 
+
+4) Occasionally one of them (at random) goes out for a while - but two must remain in the room at all times (semaphore).
