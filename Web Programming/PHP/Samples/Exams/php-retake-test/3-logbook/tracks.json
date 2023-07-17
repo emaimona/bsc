@@ -1,0 +1,218 @@
+{
+    "1": {
+        "id": "1",
+        "from": "\u00cdrottk\u0151",
+        "to": "S\u00e1rv\u00e1r",
+        "length": 70.2,
+        "elevation": 430,
+        "time": 1097
+    },
+    "2": {
+        "id": "2",
+        "from": "S\u00e1rv\u00e1r",
+        "to": "S\u00fcmeg",
+        "length": 71.9,
+        "elevation": 280,
+        "time": 1106
+    },
+    "3": {
+        "id": "3",
+        "from": "S\u00fcmeg",
+        "to": "Keszthely",
+        "length": 47.5,
+        "elevation": 810,
+        "time": 794
+    },
+    "4": {
+        "id": "4",
+        "from": "Keszthely",
+        "to": "Tapolca",
+        "length": 25.7,
+        "elevation": 470,
+        "time": 433
+    },
+    "5": {
+        "id": "5",
+        "from": "Tapolca",
+        "to": "Badacsonyt\u00f6rdemic",
+        "length": 15.7,
+        "elevation": 330,
+        "time": 269
+    },
+    "6": {
+        "id": "6",
+        "from": "Badacsonyt\u00f6rdemic",
+        "to": "Nagyv\u00e1zsony",
+        "length": 41,
+        "elevation": 1260,
+        "time": 741
+    },
+    "7": {
+        "id": "7",
+        "from": "Nagyv\u00e1zsony",
+        "to": "V\u00e1rosl\u0151d",
+        "length": 22.1,
+        "elevation": 400,
+        "time": 372
+    },
+    "8": {
+        "id": "8",
+        "from": "V\u00e1rosl\u0151d",
+        "to": "Zirc",
+        "length": 38.7,
+        "elevation": 1020,
+        "time": 683
+    },
+    "9": {
+        "id": "9",
+        "from": "Zirc",
+        "to": "Bodajk",
+        "length": 44.8,
+        "elevation": 890,
+        "time": 760
+    },
+    "10": {
+        "id": "10",
+        "from": "Bodajk",
+        "to": "Sz\u00e1rliget",
+        "length": 48.5,
+        "elevation": 1160,
+        "time": 843
+    },
+    "11": {
+        "id": "11",
+        "from": "Sz\u00e1rliget",
+        "to": "Dorog",
+        "length": 67.2,
+        "elevation": 1950,
+        "time": 1204
+    },
+    "12": {
+        "id": "12",
+        "from": "Dorog",
+        "to": "Piliscsaba",
+        "length": 18.6,
+        "elevation": 440,
+        "time": 322
+    },
+    "13": {
+        "id": "13",
+        "from": "Piliscsaba",
+        "to": "H\u0171v\u00f6sv\u00f6lgy",
+        "length": 21.7,
+        "elevation": 480,
+        "time": 373
+    },
+    "14": {
+        "id": "14",
+        "from": "H\u0171v\u00f6sv\u00f6lgy",
+        "to": "Roz\u00e1lia t\u00e9glagy\u00e1r",
+        "length": 13.9,
+        "elevation": 450,
+        "time": 253
+    },
+    "15": {
+        "id": "15",
+        "from": "Roz\u00e1lia t\u00e9glagy\u00e1r",
+        "to": "Dobog\u00f3k\u0151",
+        "length": 22.3,
+        "elevation": 1000,
+        "time": 434
+    },
+    "16": {
+        "id": "16",
+        "from": "Dobog\u00f3k\u0151",
+        "to": "Visegr\u00e1d",
+        "length": 24.2,
+        "elevation": 510,
+        "time": 414
+    },
+    "17": {
+        "id": "17",
+        "from": "Nagymaros",
+        "to": "N\u00f3gr\u00e1d",
+        "length": 38.1,
+        "elevation": 1610,
+        "time": 732
+    },
+    "18": {
+        "id": "18",
+        "from": "N\u00f3gr\u00e1d",
+        "to": "Becske",
+        "length": 51.7,
+        "elevation": 1560,
+        "time": 931
+    },
+    "19": {
+        "id": "19",
+        "from": "Becske",
+        "to": "M\u00e1travereb\u00e9ly",
+        "length": 67.3,
+        "elevation": 1720,
+        "time": 1181
+    },
+    "20": {
+        "id": "20",
+        "from": "M\u00e1travereb\u00e9ly",
+        "to": "M\u00e1trah\u00e1za",
+        "length": 25.9,
+        "elevation": 1170,
+        "time": 505
+    },
+    "21": {
+        "id": "21",
+        "from": "M\u00e1trah\u00e1za",
+        "to": "Sirok",
+        "length": 21.7,
+        "elevation": 970,
+        "time": 422
+    },
+    "22": {
+        "id": "22",
+        "from": "Sirok",
+        "to": "Szarvask\u0151",
+        "length": 17.5,
+        "elevation": 340,
+        "time": 297
+    },
+    "23": {
+        "id": "23",
+        "from": "Szarvask\u0151",
+        "to": "Putnok",
+        "length": 54.9,
+        "elevation": 1880,
+        "time": 1012
+    },
+    "24": {
+        "id": "24",
+        "from": "Putnok",
+        "to": "B\u00f3dvaszilas",
+        "length": 63.9,
+        "elevation": 1755,
+        "time": 1740
+    },
+    "25": {
+        "id": "25",
+        "from": "B\u00f3dvaszilas",
+        "to": "Boldogk\u0151v\u00e1ralja",
+        "length": 65,
+        "elevation": 850,
+        "time": 1059
+    },
+    "26": {
+        "id": "26",
+        "from": "Boldogk\u0151v\u00e1ralja",
+        "to": "S\u00e1toralja\u00fajhely",
+        "length": 52.7,
+        "elevation": 1680,
+        "time": 959
+    },
+    "27": {
+        "id": "27",
+        "from": "S\u00e1toralja\u00fajhely",
+        "to": "Holl\u00f3h\u00e1za",
+        "length": 46.4,
+        "elevation": 1280,
+        "time": 825
+    }
+}

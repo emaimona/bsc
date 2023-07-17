@@ -1,0 +1,94 @@
+{
+    "6479a66b52972": {
+        "track": "1",
+        "date-from": "2023-06-23",
+        "date-to": "2023-06-24",
+        "log": "sdfasdfa",
+        "fellows": [
+            "Name1",
+            "Name2",
+            "Name3"
+        ],
+        "fellow-text": [
+            "ango",
+            "ema"
+        ],
+        "rating": "2",
+        "id": "6479a66b52972"
+    },
+    "6479c564b99f1": {
+        "track": "1",
+        "date-from": "2023-06-17",
+        "date-to": "2023-06-01",
+        "log": "I am dead!",
+        "fellows": null,
+        "fellow-text": [
+            "Emanuel",
+            "Maimona"
+        ],
+        "rating": "4",
+        "id": "6479c564b99f1"
+    },
+    "6479c57fbec8d": {
+        "track": "1",
+        "date-from": "2023-06-04",
+        "date-to": "2023-06-02",
+        "log": "Nothing to add",
+        "fellows": null,
+        "fellow-text": [
+            "Meetibakc",
+            " Key"
+        ],
+        "rating": "4",
+        "id": "6479c57fbec8d"
+    },
+    "6479c5a469f75": {
+        "track": "1",
+        "date-from": "2023-06-07",
+        "date-to": "2023-05-30",
+        "log": "write",
+        "fellows": [
+            "ango",
+            "ema"
+        ],
+        "fellow-text": [
+            "ema"
+        ],
+        "rating": "2",
+        "id": "6479c5a469f75"
+    },
+    "6479c820346e7": {
+        "track": "17",
+        "date-from": "2023-05-30",
+        "date-to": "2023-06-22",
+        "log": "kkkk nothing at all!",
+        "fellows": [
+            "Emanuel",
+            " Key",
+            "Job",
+            " Frineds"
+        ],
+        "fellow-text": [
+            "Job",
+            " Frineds"
+        ],
+        "rating": "3",
+        "id": "6479c820346e7"
+    },
+    "6479d8175c6bf": {
+        "track": "8",
+        "date-from": "2023-06-20",
+        "date-to": "2023-06-21",
+        "log": "Wowo!",
+        "fellows": [
+            "Emanuel",
+            "Maimona",
+            ""
+        ],
+        "fellow-text": [
+            ""
+        ],
+        "rating": "5",
+        "id": "6479d8175c6bf"
+    }
+}

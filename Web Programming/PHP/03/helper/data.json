@@ -3,7 +3,7 @@
         "name": "John",
         "year": 2023,
         "height": 150,
-        "student": true
+        "student": false
     },
     "1": {
         "name": "Anna",
@@ -22,11 +22,5 @@
         "year": 2002,
         "height": 201,
         "student": true
-    },
-    "5": {
-        "name": "Zsombor",
-        "year": 2001,
-        "height": 183,
-        "student": false
     }
 }

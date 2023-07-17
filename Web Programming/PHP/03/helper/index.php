@@ -1,12 +1,7 @@
 <?php
-    //*file_get_contents('data.json') // store the content of the file as a string
-    //* json_decode  turns into an objct
-
-
-    $data = json_decode(file_get_contents('data.json'), true);
-    var_dump($data);
-
-    include_once('data.json');
+    include_once('storage.php');
+    $stor = new Storage(new JsonIO('data.json'));
+    $data = $stor -> findAll();
 ?>
 
 <h1>List of names</h1>

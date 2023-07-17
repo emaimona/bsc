@@ -1,20 +1,17 @@
 
 <?php 
-    if ($_POST) {
-        $data = json_decode(file_get_contents('data.json', true));
+    include_once('storage.php');
+    $stor = new Storage(new JsonIO('data.json'));
 
-        $data[] = [
+    if ($_POST) {
+       
+        $stor -> add( [
             'name' => $_POST['name'],
             'year' => intval($_POST['year']), // WARNING: intval('banana') === 0
             'height' => floatval($_POST['height']),
             'student' => isset($_POST['student']), //* we have to check the 'checkbox' because they do not sent any value if its not marked
-        ];
+        ]);
 
-        // file_put_contents('data.json', json_encode($data));
-
-        //* JSON_PRETTY_PRINT is use for nice printing
-
-        file_put_contents('data.json', json_encode($data, JSON_PRETTY_PRINT));
         header('location: index.php');
     }
 
