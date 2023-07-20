@@ -1,0 +1,31 @@
+CREATE TABLE Beers (name VARCHAR(30) PRIMARY KEY, manf VARCHAR(30));
+CREATE TABLE Bars (name VARCHAR(20) PRIMARY KEY, addr VARCHAR(20), license VARCHAR(20));
+CREATE TABLE Drinkers (name VARCHAR(30) PRIMARY KEY, addr VARCHAR(50) DEFAULT '123 Sesame St.', phone VARCHAR(16));
+CREATE TABLE Likes2 (drinker VARCHAR(30), beer VARCHAR(30));
+CREATE TABLE Sells (bar VARCHAR(20), beer VARCHAR(20), price REAL);
+CREATE TABLE Frequents (drinker VARCHAR(30), bar VARCHAR(20));
+----------------------
+INSERT INTO Beers VALUES('Bud', 'Anheuser-Busch');
+INSERT INTO Beers VALUES('Bud Lite', 'Anheuser-Busch');
+INSERT INTO Beers VALUES('Michelob', 'Anheuser-Busch');
+INSERT INTO Beers VALUES('Lemonati', 'Burley Oak');
+----------------------
+INSERT INTO Bars VALUES('Joes Bar', 'Maple St.', null);
+INSERT INTO Bars VALUES('Sues Bar', 'River Rd.', null);
+INSERT INTO Bars VALUES('Tims Bar', 'Time Sq.', null);
+----------------------
+INSERT INTO Drinkers VALUES ('Sally', 'Maple St.', '555-1234');
+INSERT INTO Drinkers VALUES ('Fred', 'Maple St.', '555-4321');
+----------------------
+INSERT INTO Likes2 VALUES ('Sally', 'Bud');
+INSERT INTO Likes2 VALUES ('Fred', 'Bud');
+-----------------------
+INSERT INTO Sells VALUES('Joes Bar', 'Bud', 2.50);
+INSERT INTO Sells VALUES('Joes Bar', 'Miller', 2.75);
+INSERT INTO Sells VALUES('Sues Bar', 'Bud', 2.50);
+INSERT INTO Sells VALUES('Sues Bar', 'Miller', 3.00);
+INSERT INTO Sells VALUES('Tims Bar', 'Miller', 2.50);
+-----------------------
+INSERT INTO Frequents VALUES('Sally', 'Joes Bar');
+INSERT INTO Frequents VALUES('Fred', 'Sues Bar');
+COMMIT;
