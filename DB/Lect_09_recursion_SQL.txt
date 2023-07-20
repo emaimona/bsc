@@ -1,0 +1,41 @@
+-- SQL query in Oracle syntax for the Example on page 37 in Lect_09_Datalog.pdf
+
+Extensional (EDB) relation:
+Par(c,p) -> meaning: p is a parent of c (child)
+Sibling means brother or sister
+Generalized cousins: people with common ancestors one or more generations back:
+
+Recursive Datalog program expressing Cousins:
+---------------------------------------------
+Sib(x,y) <- Par(x,p) AND Par(y,p) AND x<>y
+Cousin(x,y) <- Sib(x,y)
+Cousin(x,y) <- Par(x,xp) AND Par(y,yp) AND Cousin(xp,yp)
+
+WITH 
+Sib(a,b) AS
+  (SELECT p1.c, p2.c FROM Par p1, Par p2 
+   WHERE p1.p = p2.p AND p1.c <> p2.c),
+Cousin(x,y) AS
+  (SELECT * FROM Sib
+    UNION ALL
+   SELECT p1.c, p2.c FROM Par p1, Par p2, Cousin
+   WHERE p1.p = Cousin.x AND p2.p = Cousin.y)
+CYCLE x,y SET is_cycle TO 'T' DEFAULT 'N'
+SELECT DISTINCT * FROM Cousin WHERE x <= y ORDER BY 1,2;
+
+Sample data for Par:
+--------------------
+CREATE TABLE par(c VARCHAR2(10), p VARCHAR2(10));
+insert into par values('b','a');
+insert into par values('c','a');
+insert into par values('c','d');
+insert into par values('e','d');
+insert into par values('f','b');
+insert into par values('g','c');
+insert into par values('h','c');
+insert into par values('j','f');
+insert into par values('k','f');
+insert into par values('k','g');
+insert into par values('i','h');
+insert into par values('i','e');
+commit;

@@ -1,0 +1,98 @@
+--
+-- The most important data types of Oracle RDBMS (Relational Database Management System)
+-- See details in Oracle documentation: Database SQL Language Reference -> Basic Elements of Oracle SQL
+--
+
+
+-- Numbers --------------------------------------------------------------------
+-- number(x,y)  -- x -> precision (number of stored digits), y -> scale (number of decimals, it can be negative) 
+-- number(x)    -- x -> precision (number of stored digits), scale defaults to 0.
+-- int = integer = number(38)
+-- numeric(x,y) = number(x,y)  (synonyms)
+-- positive and natural   -- only in PL/SQL (procedural extension of SQL)
+
+
+
+-- STRINGS ------------------------------------------------------------------
+-- varchar2(17) -- Variable length string. Maximal length in paranthesis.
+-- varchar(n) = varchar2(n)  (synonyms)
+-- Insert: if length of string overrides max. length -> error
+
+-- char(15)     -- Fixed length string. Stored in fixed length, rigth padded with spaces.
+-- Insert: if length of string overrides max. length -> error
+-- Insert: if length of string is fewer -> rigth padded with spaces.
+
+-- Data type of Character literals e.g. 'ABC' (default) --> char(3). 
+-- Take care in case of char(n) datatype comparison !!!    e.g. 'str' = 'str  '  (!!!)
+-- e.g. SELECT * FROM emp WHERE 'str ' = 'str';  -> TRUE for all rows
+
+-- In case of varchar comparison, it is different (normal).
+-- e.g. SELECT * FROM emp WHERE CAST('str ' AS VARCHAR(4)) = 'str';  -> FALSE for all rows
+
+
+-- DATE and TIME --------------------------------------------------------------
+-- DATE data type     -- stores date and time with seconds precision
+
+-- ANSI Date literal: DATE '1998-12-25' 
+-- The ANSI date literal contains no time portion, and must be specified in the format 'YYYY-MM-DD'.
+-- Alternatively you can specify an Oracle date value with TO_DATE built-in function.
+
+-- We can change the date format and language:
+ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD (fmDay) HH24:MI:SS';
+ALTER SESSION SET NLS_DATE_LANGUAGE='hungarian'; -- can be english, american, french, german
+SELECT sysdate FROM dual;
+SELECT to_char(sysdate, 'day') FROM dual;
+
+-- Date formats -> see in documentation
+
+
+-- Date arithmethic:
+-- d+1                    -- d plus one day
+-- d-2                    -- d minus 2 days
+-- sysdate+7              -- now plus 7 days
+-- d+1/24                 -- d plus 1 hour
+-- d2-d1                  -- time elapsed between d1 and d2 in days
+-- (d2-d1)*24*60*60       -- time elapsed between d1 and d2 in seconds
+-- months_between(d2,d1)  -- 
+-- We can get positive and negative result too.
+-- d2 > d1  =>  (+)
+-- d2 < d1  =>  (-)
+
+-- TIMESTAMP data type  -- stores fractional seconds as well
+
+SELECT SYSTIMESTAMP FROM DUAL;     -- with Time Zone see NLS_TIMESTAMP_TZ_FORMAT setting
+-- 20-APR-08 11.53.17,384707000 +02:00  
+SELECT CURRENT_TIMESTAMP FROM DUAL;
+-- 20-APR-08 11.53.55,229284000 EUROPE/PRAGUE
+SELECT LOCALTIMESTAMP FROM DUAL;   -- without Time Zone
+-- 20-APR-08 11.54.13,646841000
+SELECT TO_CHAR(SYSTIMESTAMP,'YYYY.MM.DD.HH24:MI:SS.FF TZH:TZM') FROM dual; -- using explicit Format Mask
+-- 2020.04.08.11:57:50.274611 +02:00
+SELECT TO_CHAR(SYSTIMESTAMP,'SSSSS.FF') FROM dual;  -- seconds past midnight
+
+-- other date functions -> see in documentation
+
+
+-- CONVERSION
+-- to_date('2030-OCT-28')         -- conversion based on NLS_DATE_FORMAT
+-- to_date('2030-12','YYYY-MM')   -- giving format elements  =>  2030-12-01 0:00.00
+-- The elements we don't give in will be default. Default date: actual year, actual month, first day, midnight
+-- to_date(2462803,'J')           -- Julian date 2462803rd day midnight
+-- to_char(d)                     -- output according to NLS_DATE_FORMAT
+-- to_char(d, 'HH24:MI:SS')       -- output according to format elements given
+-- to_char(127.14)                -- number -> string
+-- to_number('135.00167')         -- string -> number
+-- to_number('abc')               -- ORA-01722: invalid number
+
+
+-- Oracle SQL has no boolean type  (PL/SQL has. Literals: TRUE, FALSE, NULL)
+
+-- NULL value can be in any datatype column.
+-- Two nulls are never equal, however it is not true that they are not equal (x <> y).
+-- We can test whether x is null:
+--  x IS NULL  (wrong -> x = NULL)
+--  x IS NOT NULL
+
+e.g. SELECT * FROM emp WHERE comm IS NOT NULL;
+
+

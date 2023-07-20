@@ -1,0 +1,182 @@
+-- examples for cursors (implicit and explicit cursor)
+
+set serveroutput on
+DECLARE 
+  CURSOR curs1 IS SELECT deptno, ename FROM emp WHERE deptno = 10;
+  rec curs1%ROWTYPE;
+BEGIN
+  OPEN curs1;
+  LOOP
+    FETCH curs1 INTO rec;
+    EXIT WHEN curs1%NOTFOUND;
+    dbms_output.put_line(to_char(rec.deptno)||' - '||rec.ename);
+  END LOOP;
+  CLOSE curs1;
+END;
+/
+
+Cursor attributes:
+  %ISOPEN    
+  %FOUND     
+  %NOTFOUND  
+  %ROWCOUNT  
+
+-- Implicit cursor (for a DELETE statement)
+set serveroutput on
+DECLARE
+  v_rows_deleted VARCHAR2(30);
+  v_job emp.job%TYPE := 'SALESMAN';
+BEGIN
+  DELETE FROM emp WHERE job = v_job;
+  v_rows_deleted := (SQL%ROWCOUNT ||' row(s) deleted.');
+  DBMS_OUTPUT.PUT_LINE (v_rows_deleted);
+  ROLLBACK;  -- rollback the transaction, we don't really want to delete
+END;
+/
+
+-- Explicit cursors, 3 forms of cursor usage and cursors with parameter
+set serveroutput on
+DECLARE 
+  CURSOR curs1(p_deptno NUMBER DEFAULT 10) IS SELECT ename, sal FROM emp WHERE deptno = p_deptno;
+  CURSOR curs2(p_deptno NUMBER) IS SELECT ename, sal from emp where deptno = p_deptno;
+  rec curs1%ROWTYPE;
+BEGIN
+  OPEN curs1();            -- default parameter
+  LOOP
+    FETCH curs1 INTO rec;
+    EXIT WHEN curs1%NOTFOUND;
+    dbms_output.put_line('curs1: '||rec.ename||' - '||to_char(rec.sal));
+  END LOOP;
+  CLOSE curs1;
+
+  FOR rec IN curs2(20) LOOP   -- parameter
+    dbms_output.put_line('curs2: '||rec.ename||' - '||to_char(rec.sal));
+  END LOOP;
+
+  FOR rec IN (SELECT ename, sal FROM emp WHERE deptno=30) LOOP
+    dbms_output.put_line('curs3: '||rec.ename||' - '||to_char(rec.sal));
+  END LOOP;
+END;
+/
+
+-- Using a CURSOR for a WITH statement
+DECLARE 
+  CURSOR curs1 IS 
+  WITH
+  tmp1 AS (
+    SELECT deptno, round(AVG(sal)) dept_avg FROM emp
+    GROUP BY deptno),
+  tmp2 AS (
+    SELECT round(AVG(sal)) gen_avg FROM emp)
+  SELECT dname, dept_avg, gen_avg, dept_avg-gen_avg diff
+  FROM tmp1, tmp2, dept WHERE tmp1.deptno = dept.deptno;
+  rec curs1%ROWTYPE;
+BEGIN
+  OPEN curs1;
+  LOOP
+    FETCH curs1 INTO rec;
+    EXIT WHEN curs1%NOTFOUND;
+    dbms_output.put_line(rec.dname||' | '||rec.dept_avg||' | '||rec.diff);
+  END LOOP;
+  CLOSE curs1;
+END;
+/
+
+-- Update with a cursor  -> WHERE CURRENT OF
+-- FOR UPDATE locks rows in the table
+DECLARE 
+  CURSOR curs1 IS SELECT ename, sal FROM emp WHERE deptno = 10 FOR UPDATE;
+  rec curs1%ROWTYPE;
+BEGIN
+  OPEN curs1;
+  LOOP
+    FETCH curs1 INTO rec;
+    EXIT WHEN curs1%NOTFOUND;
+    UPDATE emp SET sal = sal+1 WHERE CURRENT OF curs1;
+    dbms_output.put_line(rec.ename||' - '||to_char(rec.sal));
+  END LOOP;
+  CLOSE curs1;
+END;
+/
+select ename, sal from emp where deptno=10;
+ROLLBACK;
+
+
+-- What happens when we update the table during cursor loop?
+-- answer: cursor doesn't see the new values
+-- result set will be fixed when opening the cursor
+set serveroutput on
+DECLARE
+ v_date    date := SYSDATE + 1;
+BEGIN
+  FOR rec IN (SELECT * FROM dept for update) LOOP
+    dbms_output.put(to_char(sysdate, 'hh24:mi:ss')||' --> ');
+    dbms_output.put_line(rec.deptno);
+    SELECT SYSDATE + 2/(24*60*60) INTO v_date FROM dual; -- 2 seconds
+    WHILE sysdate < v_date LOOP  NULL;   END LOOP;   
+    update dept set deptno = deptno+1;
+  END LOOP;
+END;
+/
+Result
+---------------
+23:05:00 --> 10
+23:05:02 --> 20
+23:05:04 --> 30
+23:05:06 --> 40
+
+select * from dept;
+rollback;
+
+
+-- Cursor update for a join
+-- LOC column will be updated in each step of iteration
+-- Result set of the cursor:
+-- TURNER  SALES
+-- MARTIN  SALES
+-- WARD    SALES
+-- ALLEN   SALES
+
+DECLARE
+  CURSOR c1 IS  SELECT ename, dname  FROM emp, dept
+    WHERE emp.deptno = dept.deptno AND job = 'SALESMAN' FOR UPDATE OF loc;
+BEGIN
+  FOR rec IN c1 LOOP
+   -- UPDATE emp SET sal = sal + 1 WHERE CURRENT OF c1;
+    UPDATE dept SET loc = loc|| '1' WHERE CURRENT OF c1;
+  END LOOP;
+END;
+/
+SELECT * FROM dept;
+...
+30 SALES CHICAGO1111
+...
+
+rollback;
+
+-- cursor variable
+-- can be strongly typed (with return type) or weakly typed (without return type)
+DECLARE 
+  TYPE empcurtyp IS REF CURSOR RETURN emp%ROWTYPE;  -- strong
+  TYPE genericcurtyp IS REF CURSOR;                 -- weak
+  TYPE t_cur IS REF CURSOR;
+  v_cur t_cur;
+  
+  PROCEDURE cursor_open(p_cur IN OUT t_cur) IS
+  BEGIN
+    OPEN p_cur FOR SELECT ename FROM emp WHERE sal > 3000;
+  END;
+  
+  FUNCTION read_cursor(p_cur IN t_cur) RETURN varchar2 IS
+    v emp.ename%TYPE;
+  BEGIN
+    FETCH p_cur INTO v;
+    RETURN v;
+  END;
+BEGIN
+  cursor_open(v_cur);
+  dbms_output.put_line(read_cursor(v_cur));
+  CLOSE v_cur;
+END;
+/
+

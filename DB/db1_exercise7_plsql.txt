@@ -1,0 +1,66 @@
+Compulsory exercise for practice 8
+===========================================================================================
+Create a table in both databases (ullman, aramis) whose name is PRACTICE8, and it contains 
+the employee names and employee numbers (ename, empno) of the employees, whose employee number
+is prime. For the exercise you should use your PL/SQL function: PRIM (see below).
+
+You can check whether you completed the compulsory exercises with the following SQL query:
+
+SELECT object_name "TABLE", created FROM user_objects 
+WHERE object_type='TABLE' AND object_name LIKE 'PRACTICE%'
+ORDER BY object_name;
+*******************************************************************************************
+
+The names and parameters (signature) of the subprograms should be exactly the same as you see below!!!
+======================================================================================================
+
+/* Write a function which decides if the parameter number is prime or not. 
+   In case of yes (no) the function returns 1 (0).
+*/
+CREATE OR REPLACE FUNCTION prim(n integer) RETURN number IS
+...
+Test the function:
+SELECT prim(26388279066623) from dual;
+---------------------------------------------------------
+
+/* Write a procedure which prints out the n-th Fibonacchi number. 
+   fib1 = 0, fib2 = 1, fib3 = 1, fib4 = 2 ... etc.
+*/
+CREATE OR REPLACE PROCEDURE fib(n integer) IS
+...
+Test the procedure:
+set serveroutput on   -- IT IS REQUIRED TO SEE THE OUTPUT !!!
+execute fib(10); 
+-- you can call the procedure with -> call fib(10);
+---------------------------------------------------------
+
+/* Write a function which returns the greatest common divisor of two integers */
+CREATE OR REPLACE FUNCTION gcd(p1 integer, p2 integer) RETURN number IS
+...
+SELECT gcd(3570,7293) FROM dual;
+---------------------------------------------------------
+
+/* Write a function which returns n factorial. */
+CREATE OR REPLACE FUNCTION factor(n integer) RETURN integer IS
+...
+SELECT factor(10) FROM dual;
+---------------------------------------------------------
+
+/* Write a function which returns the number of times the first string parameter contains 
+   the second string parameter. 
+*/
+CREATE OR REPLACE FUNCTION num_times(p1 VARCHAR2, p2 VARCHAR2) RETURN integer IS
+...
+SELECT num_times ('ab c ab ab de ab fg', 'ab') FROM dual;
+---------------------------------------------------------
+
+/* Write a function which returns the sum of the numbers in its string parameter.
+   The numbers are separated with a '+'.
+*/
+CREATE OR REPLACE FUNCTION sum_of(p_char VARCHAR2) RETURN number IS
+...
+SELECT sum_of('1 + 4 + 13 + 0') FROM dual;
+---------------------------------------------------------
+
+
+

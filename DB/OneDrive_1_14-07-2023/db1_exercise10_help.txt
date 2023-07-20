@@ -1,0 +1,102 @@
+Recursion in SQL queries
+------------------------
+
+/* DATALOG-like
+Take the relation FLIGHT and give a recursive query for the following:
+Give all the possible routes from Orig city to Dest city with the total cost of the route.
+  FLIGHT(airline VARCHAR2(10), orig VARCHAR2(15), dest VARCHAR2(15), cost NUMBER);
+Help:
+Use a temporal relation Reaches(x,y,c,r) which gives the pair of cities (x,y) for which
+it is possible to get from city x to city y by taking one or more flights, and c is the total
+cost of that flight, r is the route (concatenated string).
+First specify the Datalog rules for Reaches(orig,dest,cost,route) then rewrite it into an SQL recursive query,
+then write a procedure where p_orig and p_dest are parameters.
+*/
+CREATE OR REPLACE PROCEDURE route_costs(p_orig VARCHAR, p_dest VARCHAR) IS
+Test: 
+set serveroutput on
+execute route_costs('San Francisco','New York'); 
+-----------------------------------------------------
+The Datalog rules for Reaches(orig,dest,cost,route) and the recursive WITH statement.
+
+Reaches(X,Y,C,R)  <--  Flight(_,X,Y,C) AND R=X||Y
+Reaches(X,Y,C,R)  <--  Reaches(X,Z,C1,R1) AND Flight(_,Z,Y,C2) AND C=C1+C2 AND R=R1||Y AND X <> Y
+
+WITH  reaches(orig, dest, cost, route) AS 
+ (
+  SELECT orig, dest, cost, orig||dest FROM flight
+   UNION ALL
+  SELECT ...                                            -- here comes the recursive part 
+  )
+  CYCLE orig, dest SET cycle_yes TO 'Y' DEFAULT 'N' 
+SELECT  distinct orig, dest, cost, route FROM reaches 
+WHERE orig='San Francisco' AND dest='New York';
+=====================================================
+/* CONNECT BY
+Write a procedure which prints out (based on table NIKOVITS.PARENTOF) the names 
+of people who has a richer descendant than him/her. 
+(That is, at least one descendant has more money than the person.)
+*/
+CREATE OR REPLACE PROCEDURE rich_descendant IS
+Test: 
+set serveroutput on
+execute rich_descendant();
+-----------------------------------------------------
+CREATE OR REPLACE PROCEDURE rich_descendant IS
+ cnt INTEGER;
+BEGIN
+ FOR rec IN (SELECT name, money FROM nikovits.parentof) loop   -- loop over all people having their name and money
+  ...
+  Run a recursive query starting at the current record, 
+  and count the number of descendants having more money than the actual person.
+  If this number is at least 1, this means the actual person has a richer descendant,
+  so print out the name of the actual person.
+  ...
+ END loop;
+END;
+/
+=====================================================
+/*
+Write a procedure which prints out (based on table NIKOVITS.PARENTOF) the name,
+money and average money of the descendants for whom it is true, that the average money
+of the descendants is greater than the person's money.
+The program should print out 3 pieces of data for every row: Name, Money, Avg_Money_of_Descendants 
+*/
+CREATE OR REPLACE PROCEDURE rich_avg_descendant IS
+Test: 
+set serveroutput on
+execute rich_avg_descendant();
+-----------------------------------------------------
+-- Help: similar to the previous exercise, but you have to compute the average money of the descendants
+-- Be careful! Nobody is a descendant of himself.
+
+=====================================================
+/*
+Write a procedure which prints out (based on table NIKOVITS.FLIGHT) the nodes (cities)
+of the directed cycles, which start and end with the parameter city.
+Example output: Dallas-Chicago-Denver-Dallas
+*/
+CREATE OR REPLACE PROCEDURE find_cycle(p_node VARCHAR2) IS
+Test:
+set serveroutput on
+execute find_cycle('Denver');
+-----------------------------------------------------
+-- Help:
+-- Use SYS_CONNECT_BY_PATH to list the cities from root node, and test with CONNECT_BY_ROOT if the
+-- root city (orig) equals to the actual destination city.
+
+=====================================================
+/*
+Write a procedure which prints out (based on table NIKOVITS.PARENTOF) the name and city
+of people who have at least two ancestors with the same city as the person's city.
+*/
+CREATE OR REPLACE PROCEDURE ancestor2 IS
+Test:
+set serveroutput on
+execute ancestor2();
+-----------------------------------------------------
+-- Help:
+-- List the cities from root with SYS_CONNECT_BY_PATH and test with an outer SELECT if this list (string)
+-- contains at least 3 times the actual city
+
+

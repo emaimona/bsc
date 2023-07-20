@@ -1,0 +1,149 @@
+-- Some simple examples for PL/SQL functions and procedures
+
+-- These are local (not stored) subprograms
+DECLARE
+  num number(6);
+
+  FUNCTION func_plus_1(num number) RETURN number IS
+    v NUMBER(6);
+  BEGIN
+    v := num + 1;
+    return(v);
+  END;
+
+  PROCEDURE proc_plus_1(num number) is
+    v NUMBER(6);
+  BEGIN
+    v := num + 1;
+    dbms_output.put_line(TO_CHAR(v));
+  END;
+
+BEGIN
+  num := func_plus_1(100);
+  proc_plus_1(num);
+END;
+/
+result: 102
+-----------
+
+
+-- These are stored (in the database) subprograms, we can call them later at any time.
+
+CREATE OR REPLACE FUNCTION func_plus_2(num number) RETURN number IS
+  v NUMBER(6);
+BEGIN
+  v := num + 2;
+  return(v);
+END;
+/      
+-- We can call the function from within SQL
+SELECT func_plus_2(1000) FROM dual;
+
+CREATE OR REPLACE PROCEDURE proc_plus_2(num number) is
+  v NUMBER(6);
+BEGIN
+  v := num + 2;
+  dbms_output.put_line(TO_CHAR(v));
+END;
+/
+
+-- We can call the procedure
+CALL proc_plus_2(2000);
+-- Or equivalently
+EXECUTE proc_plus_2(2000);
+
+
+-- subprogram without parameter
+set serveroutput on
+DECLARE
+  num number(6) := 1;
+  PROCEDURE pr1 is           -- don't use paranthesis!
+    v NUMBER(6);
+  BEGIN
+    v := num + 1;
+    dbms_output.put_line(TO_CHAR(v));
+  END;
+BEGIN
+  pr1();    -- you can use paranthesis, but pr1 is ok too
+END;
+/
+
+/*******  overloading   ******/
+set serveroutput on
+DECLARE
+  PROCEDURE proc1(p IN NUMBER) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('number param');
+  END;
+
+  PROCEDURE proc1(p IN VARCHAR2) IS
+  BEGIN
+    DBMS_OUTPUT.PUT_LINE('varchar2 param');
+  END;
+BEGIN
+  proc1(100);
+  proc1('100');
+END;
+/
+Result:
+---------
+number param
+varchar2 param
+
+
+/****************** forward declaration ****************/
+set serveroutput on
+DECLARE
+  PROCEDURE proc2(p IN NUMBER);
+
+  PROCEDURE proc1(p IN NUMBER) IS
+  BEGIN
+    IF p < 10 THEN  DBMS_OUTPUT.PUT_LINE(p); proc2(p+1);  END IF;
+  END;
+
+  PROCEDURE proc2(p IN NUMBER) IS
+  BEGIN
+    IF p < 10 THEN  DBMS_OUTPUT.PUT_LINE(p); proc1(p*2);  END IF;
+  END;
+BEGIN
+  proc1(0);
+END;
+/
+Result:
+---------
+0; 1; 2; 3; 6; 7;
+
+
+-- return value of a function as a default parameter of a procedure
+set serveroutput on
+DECLARE
+  cnt pls_integer := 0;
+
+  FUNCTION dflt RETURN pls_integer IS
+  BEGIN
+    cnt := cnt + 1;         -- changes global variable cnt
+    RETURN 42;
+  END dflt;
+
+  PROCEDURE p (i IN pls_integer := dflt() ) IS    -- side effect if parameter is not provided
+  BEGIN
+    DBMS_Output.Put_Line(i);
+  END p;
+
+BEGIN
+  FOR j IN 1..3 LOOP
+   p(j);            -- Actual parameter is provided, no function call
+  END loop;
+  DBMS_Output.Put_Line('cnt: '||cnt);
+  p();              -- Actual parameter is not provided, function call, side effect
+  DBMS_Output.Put_Line('cnt: '||cnt);
+END;
+/
+Result:
+---------
+1
+2
+3
+Cnt: 0
+42
+Cnt: 1

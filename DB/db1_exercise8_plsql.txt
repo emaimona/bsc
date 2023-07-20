@@ -1,0 +1,85 @@
+Compulsory exercise for practice 9
+===========================================================================================
+Create a table in both databases (ullman, aramis) whose name is PRACTICE9, and it has two columns
+with datatype VARCHAR2(100). Then insert 3 rows into the table with the following data.
+Into the first column put the names of the following departments: 'ACCOUNTING', RESEARCH', 'SALES'
+and into the second column put the employees' jobs on that department, e.g. 'MANAGER-PRESIDENT-CLERK'.
+Hint: you can use GET_JOBS() function if you wrote it before. (See it below among the exercises.)
+
+You can check whether you completed the compulsory exercises with the following SQL query:
+
+SELECT object_name "TABLE", created FROM user_objects 
+WHERE object_type='TABLE' AND object_name LIKE 'PRACTICE%'
+ORDER BY object_name;
+*******************************************************************************************
+
+The names and parameters (signature) of the subprograms should be exactly the same as you see below!!!
+======================================================================================================
+
+/* SELECT ... INTO ...
+Write a function which returns the average salary within a salary category (parameter).
+*/
+CREATE OR REPLACE FUNCTION cat_avg(p_category integer) RETURN number IS
+...
+SELECT cat_avg(2) FROM dual;
+----------------------------------------------------------------
+/* SELECT ... INTO ...
+Write a procedure which prints out the number of employees and average salary of the employees 
+whose hiredate was the day which is the parameter of the procedure (e.g. 'Monday'). 
+*/
+CREATE OR REPLACE PROCEDURE day_avg(d varchar2) IS
+...
+set serveroutput on
+call day_avg('Thursday');  /* output example: Number of emps: 4, Average sal: 2481.25 */
+
+some hint: 1. to_char(hiredate, 'Day', 'nls_date_language=english')
+           2. take care of the length of the day name --> see spaces at the end
+----------------------------------------------------------------
+/* Insert, Delete, Update
+Write a procedure which increases the salary of employees who has salary category p (p is parameter).
+The increment should be the minimal salary of the employee's own department.
+After executing the update statement, the procedure should print out the new average salary rounded to 2 decimals.
+At the very end the procedure should execute a ROLLBACK stetement, so you can run it several times
+on the original data.
+*/
+CREATE OR REPLACE PROCEDURE upd_cat(p integer) IS
+...
+set serveroutput on
+execute upd_cat(2);
+----------------------------------------------------------------
+/* Cursor (SELECT resulting several tuples)
+Write a procedure which takes the employees working on the parameter department
+in alphabetical order, and prints out the jobs of the employees in a concatenated string.
+*/
+CREATE OR REPLACE PROCEDURE print_jobs(d_name varchar2) IS
+...
+set serveroutput on
+call print_jobs('ACCOUNTING');  /* output example: MANAGER-PRESIDENT-CLERK */
+----------------------------------------------------------------
+/* Cursor
+Write a function which takes the employees working on the parameter department
+in alphabetical order, and returns in a concatenated string the jobs of the employees.
+*/
+CREATE OR REPLACE FUNCTION get_jobs(d_name varchar2) RETURN VARCHAR2 IS
+...
+SELECT get_jobs('ACCOUNTING') FROM dual;  /* output example: MANAGER-PRESIDENT-CLERK */
+----------------------------------------------------------------
+/* Associative array --> TABLE OF ... INDEX BY
+Write a procedure which takes the first n (n is the parameter) prime numbers and puts them into 
+an associative array. The procedure should print out the last prime and the total sum of the prime numbers.
+*/
+CREATE OR REPLACE PROCEDURE primes(n integer) IS
+...
+set serveroutput on
+execute primes(100);
+----------------------------------------------------------------
+/* Cursor and associative array
+Write a plsql procedure which takes the employees in alphabetical order
+and puts every second employee's name (1st, 3rd, 5th etc.) and salary into an associative array.
+The program should print out the penultimate values (the one before the last) from the array.
+*/
+CREATE OR REPLACE PROCEDURE curs_array IS
+...
+set serveroutput on
+execute curs_array();
+----------------------------------------------------------------

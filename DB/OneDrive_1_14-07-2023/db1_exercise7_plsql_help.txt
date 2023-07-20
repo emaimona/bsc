@@ -1,0 +1,43 @@
+/* Write a function which decides if the parameter number is prime or not. 
+   In case of yes/no the function returns 1/0 
+*/
+CREATE OR REPLACE FUNCTION prim(n integer) RETURN number IS
+...
+SELECT prim(26388279066623) from dual;
+---------------------------------------------------------
+create or replace FUNCTION prim(n integer) RETURN number IS
+ ret_val NUMBER(1) := 1;
+ v_limit NUMBER(38);
+BEGIN
+ IF n < 0 OR trunc(n) <> n THEN RETURN -1; END IF;
+  v_limit := trunc(sqrt(n));
+  FOR i IN 2..v_limit loop
+  IF mod(n, i) = 0 THEN ret_val := 0; exit; END IF;
+ END loop;
+ RETURN ret_val;
+END;
+/
+=========================================================
+/* Write a procedure which prints out the n-th Fibonacchi number. 
+   fib1 = 0, fib2 = 1, fib3 = 1, fib4 = 2 ... etc.
+*/
+CREATE OR REPLACE PROCEDURE fib(n integer) IS
+...
+set serveroutput on
+execute fib(10);  
+-- you can call the procedure with -> call fib(10);
+---------------------------------------------------------
+create or replace PROCEDURE fib(n integer) IS
+ v1  integer := 0;
+ v2  integer := 1;
+ v_next integer := 0;
+BEGIN
+  IF n <= 1 THEN v_next:=v1; ELSIF n=2 THEN v_next:=v2; END IF; 
+  FOR i IN 3 .. n LOOP
+    v_next := v1+v2;
+    v1 := v2; v2 := v_next; 
+  END LOOP;
+  DBMS_OUTPUT. PUT_LINE(TO_CHAR(v_next));
+END;
+/
+=========================================================

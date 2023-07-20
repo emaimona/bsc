@@ -1,0 +1,139 @@
+Databases 1, 2nd test 2023.05.30. 14.00   
+=======================================
+
+You can see your points, test grade and final practice grade selecting the following table in ULLMAN database:
+
+   SELECT * FROM nikovits.db1_grades;
+
+Some comments about grading:
+- You had only 6 exercises, so columns EX1A and EX1B are empty. Your point for Exercise1 is in column EX1C.
+- I gave 10 points for each exercise, so it was easier to give partial points. (20 points -> grade 2, etc.)
+- Sending the output was a requirement. If you didn't send it, you got 0 point.
+- You can see the correct output for the exercises, so you can find your errors.
+
+-----------------------------------------------------------------------------
+You should make the following PL/SQL procedures/functions.
+The names and parameters (signature) of the subprograms should be exactly the same as you see below!!!
+
+Making 2 exercises is enough for grade 2
+Making 3 exercises is enough for grade 3
+Making 4 exercises is enough for grade 4
+Making 5 exercises is enough for grade 5
+
+Send the source code and the OUTPUT (!) of the program in a text file to the following email address: 
+   nikovits@inf.elte.hu  
+You can find at each exercise how you should test (run) your program.
+You can use ARAMIS or ULLMAN database.
+
+!!!!!    If you don't send the output of your program for the test input I will not evaluate it  !!!!!
+======================================================================================================
+
+Exercise 1
+----------
+Write a procedure which prints out the common prime divisors of the two parameters,
+separated by commas. For example, for (60,84) the output is 2,3.
+CREATE OR REPLACE PROCEDURE common_primes(n1 integer, n2 integer) IS
+Test:
+set serveroutput on
+execute common_primes(66924, 18876);
+
+Output:
+-------
+2,3,11,13
+
+
+Exercise 2 (Create your own table from NIKOVITS.EMP before running.)
+----------
+Write a procedure which increases the salary of the employees who has salary category p (p is parameter).
+The increment should be 2*commission (COMM column) of the employee, or if COMM is NULL, then the increment is 200.
+After executing the update, the procedure should print out the new average salary rounded to 2 decimals.
+At the very end (after printing out the average) the procedure should give a ROLLBACK statement
+to save the original content of the table, in order to be able to run it several times.
+CREATE OR REPLACE PROCEDURE add_commission(p integer) IS
+Test:
+set serveroutput on
+execute add_commission(4);
+Help: -> The correct output is between 2200 and 2300.
+
+Output:
+-------
+2295.59
+
+
+Exercise 3
+----------
+Write a procedure which prints out the names and salaries of employees whose name has two 
+vowels (A,E,I,O,U) and prints out the average salary of these employees.
+CREATE OR REPLACE PROCEDURE avg_sal IS 
+Test:
+set serveroutput on
+execute avg_sal();
+Help: -> The average is between 2000 and 2100.
+
+Output:
+-------
+ALLEN - 1600
+JONES - 2975
+MARTIN - 1250
+BLAKE - 4250
+TURNER - 1500
+ADAMS - 1100
+JAMES - 950
+MILLER - 1300
+COOK - 3800
+-> Average: 2080,56
+
+
+Exercise 4 (Create your own table from NIKOVITS.EMP before running.)
+----------
+Write a procedure which updates the salaries on the parameter department in the following way:
+If the employee's name contains a letter 'N' then the increment is 20000. If not, then the 
+increment is n*1000, where n is the salary category of the employee. 
+The procedure should print out the employee's name, old salary and new salary.
+At the very end the procedure should give a ROLLBACK statement to save the original 
+content of the table, in order to be able to run it several times.
+CREATE OR REPLACE PROCEDURE sal_increase(p_deptno number) IS
+Test:
+set serveroutput on
+execute sal_increase(30);
+
+Output:
+-------
+ALLEN  - 1600 - 21600
+WARD   - 1250 -  3250
+MARTIN - 1250 - 21250
+BLAKE  - 4250 -  9250
+TURNER - 1500 - 21500
+JAMES  -  950 -  1950
+
+
+Exercise 5
+----------
+Write a function which returns the sum of the numbers in its string parameter.
+The numbers are separated with a '+'. If any expression between the '+' characters
+is not a number, the function should consider this expression as 0.
+CREATE OR REPLACE FUNCTION sum_of2(p_char VARCHAR2) RETURN number IS
+Test:
+SELECT sum_of2('1+21 + bubu + y1 + 2 + -1 ++') FROM dual;
+
+Output:
+-------
+23
+
+
+Exercise 6
+----------
+Write a procedure which prints out (based on table NIKOVITS.PARENTOF) the name,
+money and average money of the descendants for whom it is true, that the average money
+of the descendants is greater than the person's money.
+The program should print out 3 pieces of data for every row: Name, Money, Avg_Money_of_Descendants 
+CREATE OR REPLACE PROCEDURE rich_avg_descendant IS
+Test: 
+set serveroutput on
+execute rich_avg_descendant();
+
+Output:
+-------
+GEDEON - 120000 - 141000
+PETER  - 143000 - 177000
+SIMEON - 154000 - 178500

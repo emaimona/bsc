@@ -1,0 +1,1 @@
+π l1.name σ l1.name=l2.name ∧ l1.fruits<>l2.fruits ((ρ l1 (Likes)) ⨯ (ρ l2 (Likes)))

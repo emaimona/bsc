@@ -1,0 +1,125 @@
+Compulsory exercise for practice 2
+===========================================================================================
+Create a table in both databases (ullman, aramis) whose name is PRACTICE2, and it contains 
+the name of those who like both apple and pear (see LIKES table below).
+
+In the following you can check on your own whether you completed the compulsory exercises
+with the following SQL query:
+
+SELECT object_name "TABLE", created FROM user_objects 
+WHERE object_type='TABLE' AND object_name LIKE 'PRACTICE%'
+ORDER BY object_name;
+*******************************************************************************************
+
+LIKES (name, fruits)
+----------------------
+
+NAME     FRUITS
+---------------
+Piglet   apple
+Piglet   pear
+Piglet   raspberry
+Winnie   apple
+Winnie   pear
+Kanga    apple
+Tiger    apple
+Tiger    pear
+
+-- DROP TABLE likes; (drop the table if it exists already)
+
+-- Create your own empty table.
+CREATE TABLE LIKES (NAME varchar(14), FRUITS varchar(14));
+
+-- Insert rows into the table.
+
+   insert into LIKES values ('Piglet','apple');
+   insert into LIKES values ('Piglet','pear');
+   insert into LIKES values ('Piglet','raspberry');
+   insert into LIKES values ('Winnie','apple');
+   insert into LIKES values ('Winnie','pear');
+   insert into LIKES values ('Kanga','apple');
+   insert into LIKES values ('Tiger','apple');
+   insert into LIKES values ('Tiger','pear');
+
+commit;  -- see later, but don't forget, it is important
+-- grant select on LIKES to public;
+
+SELECT * FROM likes;  -- query your own table
+
+-- Query the table of the instructor: 
+SELECT * FROM nikovits.likes;
+
+-- Create your own table from an existing one: (don't forget to drop the old one if exists)
+CREATE TABLE likes AS SELECT * FROM nikovits.likes;
+
+Give the following queries in Relational Algebra and SQL: (based on table nikovits.likes)
+---------------------------------------------------------
+1. List the fruits that Winnie likes.
+2. List the fruits that Winnie doesn't like but someone else does.
+3. Who likes apple?
+4. List those names who doesn't like pear but like something else.
+5. Who likes raspberry or pear? 
+6. Who likes both apple and pear?
+7. Who likes apple but doesn't like pear? 
+----------- so far in db1_exercise1.txt
+8.  List the names who like at least two different fruits.
+9.  List the names who like at least three different fruits.
+10. List the names who like at most two different fruits.
+11. List the names who like exactly two different fruits.
+------------------------------------------------------------------
+
+Other tables -> EMP and DEPT tables (similar to Employees and Departments tables)
+
+EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+DEPT(deptno, dname, loc)
+
+DEPTNO  DNAME       LOC
+----------------------------
+10      ACCOUNTING  NEW YORK
+20      RESEARCH    DALLAS
+30      SALES       CHICAGO
+40      OPERATIONS  BOSTON
+
+CREATE TABLE dept(
+ deptno   NUMERIC(2),    -- department number
+ dname    VARCHAR(14),   -- department name 
+ loc      VARCHAR(13)    -- location of the department
+);
+-- GRANT select ON dept to public;
+
+
+Give the following queries in Relational Algebra and SQL: 
+(based on tables nikovits.emp, nikovits.dept)
+---------------------------------------------------------
+1.  List the employees whose salary is greater than 2800.
+2.  List the employees working on department 10 or 20.
+3.  List the employees whose commission is greater than 600.
+4.  List the employees whose commission is NOT greater than 600.
+5.  List the employees whose commission is not known (that is NULL).
+6.  List the jobs of the employees (with/without duplication).
+7.  Give the name and double salary of employees working on department 10.
+8.  List the employees whose hiredate is greater than 1982.01.01.
+9.  List the employees who doesn't have a manager.
+10. List the employees whose name contains a letter 'A'.
+11. List the employees whose name contains two letters 'L'.
+12. List the employees whose salary is between 2000 and 3000.
+13. List the name and salary of employees ordered by salary.
+14. List the name and salary of employees ordered by salary in descending order and 
+    within that order, ordered by name in ascending order.
+15. List the employees whose manager is KING. (reading empno of KING from monitor)
+----------- so far in db1_exercise1.txt
+16. List the employees whose manager is KING. (without reading from monitor)
+17. Give the names of employees who are managers of someone, but whose job is not 'MANAGER'.
+18. List the names of employees who has greater salary than his manager.
+19. List the employees whose manager's manager is KING.
+20. List the employees whose department's location is DALLAS or CHICAGO?
+21. List the employees whose department's location is not DALLAS and not CHICAGO?
+22. List the employees whose salary is greater than 2000 or work on a department in CHICAGO.
+23. Which department has no employees?
+24. List the employees who has a subordinate whose salary is greater than 2000.
+25. List the employees who doesn't have a subordinate whose salary is greater than 2000.
+26. List the department names and locations where there is an employee with job ANALYST.
+27. List the department names and locations where there is no employee with job ANALYST.
+28. Give the name(s) of employees who have the greatest salary. (rel. alg + SQL)
+
+

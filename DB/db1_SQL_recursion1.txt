@@ -1,0 +1,58 @@
+A new table for recursive "Datalog-like" queries (see in TextBook and in UW_10_2_Recusrion.pdf)
+===============================================================================================
+
+-- Create an empty table then insert rows:
+CREATE TABLE Flight(airline VARCHAR2(10), orig VARCHAR2(15), dest VARCHAR2(15), cost NUMBER);
+
+INSERT INTO flight VALUES('Lufthansa', 'San Francisco', 'Denver', 1000);
+INSERT INTO flight VALUES('Lufthansa', 'San Francisco', 'Dallas', 10000);
+INSERT INTO flight VALUES('Lufthansa', 'Denver', 'Dallas', 500);
+INSERT INTO flight VALUES('Lufthansa', 'Denver', 'Chicago', 2000);
+INSERT INTO flight VALUES('Lufthansa', 'Dallas', 'Chicago', 600);
+INSERT INTO flight VALUES('Lufthansa', 'Dallas', 'New York', 2000);
+INSERT INTO flight VALUES('Lufthansa', 'Chicago', 'New York', 3000);
+INSERT INTO flight VALUES('Lufthansa', 'Chicago', 'Denver', 2000);
+
+-- The tuples are not the same as in TextBook. I inserted an extra tuple 
+-- in order to have a cycle in the graph of Flight table. 
+--> orig = 'Chicago' and dest = 'Denver';
+
+
+DATALOG programs
+-----------------
+Datalog is a logical query language (Data Logic). See textbook (Ullman ch. 5.3, 5.4 and 10.2)
+
+Let's see relation Reaches(x,y) which answers the following query.
+For what pairs of cities (x, y) is it possible to get from city x to city y by taking one or more flights?
+
+A recursive DATALOG program for the REACHES table:
+--------------------------------------------------
+Reaches(X,Y)  <--  Flight(_,X,Y,_)
+Reaches(X,Y)  <--  Reaches(X,Z) AND Reaches(Z,Y) AND X <> Y
+
+Most DBMS-s allow only linear recursion in recursive queries, which means:
+no rule has more than one subgoal that is mutually recursive with the head.
+(See mutual recursion in textbook, ch. 10.2)
+In the previous datalog program the second rule violates this requirement.
+
+The datalog program below contains only linear recursion:
+
+Reaches(X,Y)  <--  Flight(_,X,Y,_)
+Reaches(X,Y)  <--  Flight(_,X,Z,_) AND Reaches(Z,Y) AND X <> Y
+
+
+SQL query
+---------
+WITH  reaches(orig, dest) AS 
+ (
+  SELECT orig, dest FROM flight
+   UNION ALL
+  SELECT flight.orig, reaches.dest FROM flight, reaches
+  WHERE flight.dest = reaches.orig AND flight.orig <> reaches.dest
+  )
+  CYCLE orig, dest SET is_cycle TO 'Y' DEFAULT 'N' 
+SELECT  distinct orig, dest, is_cycle FROM reaches order by 1,2,3;
+
+
+
+

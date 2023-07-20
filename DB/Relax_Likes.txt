@@ -1,0 +1,41 @@
+Relational algebra calculator -> RelaX
+--------------------------------------
+https://dbis-uibk.github.io/relax/landing
+
+Please read the Help (upper right corner)
+
+How to create relations and insert tuples into them:
+----------------------------------------------------
+1. Click on 'Group Editor' tab
+2. Copy into 'Group Editor' window your data. Find below my examples!
+3. Click on "preview" button then on "use Group in editor" button
+4. Now you can run your queries clicking on 'Relational Algebra' or 'SQL' tab.
+
+Attention!!!
+This implementation allows only sets and not multisets.
+There are differencies between Oracle and Relax SQL syntax. 
+Name of a relation is case-sensitive.
+
+---------------------------------------------------------
+Sample relation Likes(name, fruits)
+=========================================================
+group: DB1 Likes
+description[[ Likes(name, fruits) relation ]]
+
+Likes = {
+name:string, fruits:string
+Piglet,   apple
+Piglet,   pear
+Piglet,   raspberry
+Winnie,   apple
+Winnie,   pear
+Kanga,    apple
+Tiger,    apple
+Tiger,    pear
+}
+=========================================================
+Sample query:
+List the fruits that Winnie likes.
+
+pi fruits (sigma name='Winnie' (Likes))
+

@@ -1,0 +1,157 @@
+
+/*************** scope and visibility *************/
+<<label1>>
+DECLARE
+  a  NUMBER;
+BEGIN
+  a:=2;
+  <<label2>>
+  DECLARE
+    a number;
+  BEGIN
+    a:=4;
+    dbms_output.put_line(label1.a);
+    dbms_output.put_line(label2.a);
+    dbms_output.put_line(a);
+  END;
+  dbms_output.put_line(a);
+END;
+/
+output:
+-------
+2
+4
+4
+2
+
+
+/************** outer (bind) variables, it works only in SQL*PLUS environment *************/
+/* program gets a pointer, so it can modify the variable
+Variable v number;
+BEGIN
+ :v := mod(121,3);
+END;
+/
+print v;
+
+
+/************** printing on the screen *************/
+set serveroutput on
+BEGIN
+  DBMS_OUTPUT.PUT_LINE('Hello World!');
+END;
+/
+
+/*
+ Use SET SERVEROUTPUT ON  
+ A PL/SQL program actually doesn't print on the screen. It prints into a buffer on the server side.
+ You can use GET_LINE to read from the buffer.
+*/
+
+SET SERVEROUTPUT ON
+DECLARE
+  v_status  INTEGER := 0;
+  v_line    VARCHAR2(100); 
+  v_buff    VARCHAR2(1000);
+BEGIN 
+  -- We print 3 lines into the buffer.
+  DBMS_OUTPUT.PUT_LINE('1-bubu'); DBMS_OUTPUT.PUT_LINE('2-bibi'); DBMS_OUTPUT.PUT_LINE('3-baba');
+  -- We empty the buffer.
+  WHILE v_status = 0 LOOP
+    DBMS_OUTPUT.GET_LINE (v_line, v_status);
+    v_buff := v_buff || v_line;
+  END LOOP;
+  -- We print the concatenated string into the buffer.
+  DBMS_OUTPUT.PUT_LINE(v_buff);
+END;
+/
+Result:
+---------
+1-bubu2-bibi3-baba
+
+
+/*
+Runtime environment reads the buffer only after the program terminated. Without 'set serveroutput on'
+result remains in buffer.
+*/
+
+set serveroutput off     -- notice OFF !!!
+BEGIN 
+  DBMS_OUTPUT.PUT_LINE('first program');      
+  DBMS_OUTPUT.PUT_LINE('second program');     
+END;
+/
+Result:
+-------
+... there will be no output
+
+SET SERVEROUTPUT ON
+DECLARE
+  v_status  INTEGER := 0;
+  v_line    VARCHAR2(100); 
+BEGIN 
+  WHILE v_status = 0 LOOP
+    DBMS_OUTPUT.GET_LINE (v_line, v_status);       -- reads buffer
+  END LOOP;
+  DBMS_OUTPUT.PUT_LINE('second program');          -- writes into buffer
+END;
+/
+Result:
+---------
+second program
+
+
+/****************** Input from the user ****************/
+/* substitution happens before SQL statement is sent to Oracle Server */
+
+ACCEPT v1 NUMBER FORMAT '99' PROMPT 'Give the department number:'
+ACCEPT v2 DATE FORMAT 'yyyy.mm.dd' DEFAULT 1982.01.01 PROMPT 'Date (format: 2013.01.30)'
+set serveroutput on
+DECLARE 
+  v_sum NUMBER;
+BEGIN
+  SELECT sum(sal) INTO v_sum FROM emp WHERE deptno = &v1 AND hiredate < to_date('&v2', 'yyyy.mm.dd');
+  dbms_output.put_line(v_sum);
+END;
+/
+
+
+/****************** records ****************/
+DECLARE
+  TYPE rektip IS RECORD(m1 INTEGER, m2 VARCHAR2(10));
+  rec rektip;
+BEGIN
+  rec.m1 := 1; rec.m2 := 'Bubu';
+  DBMS_OUTPUT. PUT_LINE(rec.m2);
+END;
+
+
+/****************** records, arrays ****************/
+set serveroutput on
+DECLARE
+  TYPE rek_type IS RECORD(f1 INTEGER DEFAULT 10, f2 dept%ROWTYPE);  -- nested record (ROWTYPE)
+  rec rek_type;
+  TYPE tab_type IS TABLE OF INTEGER INDEX BY BINARY_INTEGER;   -- associative (index by) array
+  TYPE rek_type2 IS RECORD(f1 INTEGER, f2 tab_type);           -- nested array within a field
+  rec2 rek_type2;
+  rec_oszt dept%ROWTYPE;                                       -- a record too
+BEGIN
+ rec_oszt.dname := 'SALES';
+ dbms_output.put_line(rec.f1);                             -- default value of the field
+ 
+ SELECT * INTO rec.f2 FROM dept WHERE deptno = 10;         -- rec (nested record)
+ dbms_output.put_line(rec.f2.loc);
+ 
+ rec2.f2(1) := 100; rec2.f2(2) := 200; rec2.f2(3) := 300;  -- rec2 (array within a field)
+ FOR i IN rec2.f2.FIRST .. rec2.f2.LAST LOOP
+   dbms_output.put_line(rec2.f2(i));
+ END LOOP;
+END;
+/
+Result:
+-------
+10
+NEW YORK
+100
+200
+300

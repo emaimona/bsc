@@ -1,0 +1,94 @@
+-- Control statements
+
+-- IF THEN
+IF condition THEN
+  statements
+END IF;
+
+-- IF THEN ELSE
+IF condition THEN
+  statements
+ELSE
+  else_statements
+END IF;
+
+-- IF THEN ELSIF
+IF condition_1 THEN
+  statements_1
+ELSIF condition_2 THEN
+  statements_2
+[ ELSIF condition_3 THEN
+    statements_3
+]...
+[ ELSE
+    else_statements
+]
+END IF;
+
+-- Simple CASE statement  CASE_NOT_FOUND exception if none of them is true
+CASE selector 
+WHEN selector_value_1 THEN statements_1
+WHEN selector_value_2 THEN statements_2
+...
+WHEN selector_value_n THEN statements_n
+[ ELSE   else_statements ]
+END CASE;
+
+-- Searched CASE statement   CASE_NOT_FOUND exception if none of them is true
+CASE
+WHEN condition_1 THEN statements_1
+WHEN condition_2 THEN statements_2
+...
+WHEN condition_n THEN statements_n
+[ ELSE   else_statements ]
+END CASE;
+
+-- Basic LOOP
+[ label ] LOOP
+  statements
+END LOOP [ label ];
+
+-- Exit from loop / starting a new iteration
+EXIT
+EXIT WHEN 
+CONTINUE
+CONTINUE WHEN
+
+-- WHILE LOOP
+[ label ] WHILE condition LOOP
+  statements
+END LOOP [ label ];
+
+-- FOR LOOP 
+[ label ] FOR index IN [ REVERSE ] lower_bound..upper_bound LOOP
+  statements
+END LOOP [ label ];
+
+BEGIN
+ FOR i IN REVERSE 1..3 loop
+  dbms_output.put_line(to_char(i));
+ END loop;
+END;
+/
+3
+2
+1
+
+-- NULL statement
+NULL;
+
+-- GOTO statement 
+GOTO label
+
+-- RETURN statement (return from a subprogram or from an anonymous block)
+
+BEGIN
+ FOR i IN 1..3 loop
+  dbms_output.put_line(i);
+  IF i=2 THEN RETURN; END IF;
+ END loop;
+END;
+/
+1
+2
+

@@ -1,0 +1,97 @@
+Databases 1, 2nd test Retake
+============================
+
+You should make the following PL/SQL procedures/functions.
+The names and parameters (signature) of the subprograms should be exactly the same as you see below!!!
+
+Making 2 exercises is enough for grade 2
+Making 3 exercises is enough for grade 3
+Making 4 exercises is enough for grade 4
+Making 5 exercises is enough for grade 5
+
+Send the source code and the OUTPUT (!) of the program in a text file to the following email address: 
+   nikovits@inf.elte.hu  
+You can find at each exercise how you should test (run) your program.
+You can use only ULLMAN database.
+
+!!!!!    If you don't send the output of your program for the test input I will not evaluate it  !!!!!
+======================================================================================================
+
+Exercise 1
+----------
+Write a function which returns the least common multiple of two integers.
+CREATE OR REPLACE FUNCTION lcm(p1 integer, p2 integer) RETURN number IS
+Test: 
+SELECT lcm(33462, 18876) FROM dual;
+Help: -> First test your program for small numbers then run it with the given parameters.
+
+Exercise 2 (Create your own table from NIKOVITS.EMP before running.)
+----------
+Write a procedure which increases the salary of the employees who has salary category p (p is parameter).
+The increment should be the commission of the employee, or if it is NULL, then the increment is 
+the number of characters in ename multiplied by 100 (e.g. KING -> 4*100).
+After executing the update statement, the procedure should print out the new average salary rounded to 2 decimals.
+At the very end (after printing out the average) the procedure should give a ROLLBACK statement
+to save the original content of the table, in order to be able to run it several times.
+CREATE OR REPLACE PROCEDURE add_commission2(p integer) IS
+Test:
+set serveroutput on
+execute add_commission2(4);
+Help: -> The correct output is between 2250 and 2300.
+
+Exercise 3
+----------
+Write a procedure which prints out the names and salaries of employees whose name has four consonants 
+(a consonant is not a vowel; vowels are: A,E,I,O,U) and prints out the average salary of these employees.
+CREATE OR REPLACE PROCEDURE avg_sal2 IS 
+Test:
+set serveroutput on
+execute avg_sal2();
+Help: -> The average is between 1700 and 1800.
+
+Exercise 4 
+----------
+Write a procedure which takes the first n (n is the parameter) prime numbers and puts them into 
+an associative array (TABLE OF ... INDEX BY ...). 
+The procedure should print out the middle (if n is an even number then the middle two) element(s) 
+from the array and the total sum of the prime numbers.
+CREATE OR REPLACE PROCEDURE primes2(n integer) IS
+Test:
+set serveroutput on
+execute primes2(41);
+execute primes2(42);
+Help: -> First test your program for small numbers.
+
+Exercise 5
+----------
+Write a function which returns the sum of the numbers in its string parameter.
+The numbers are separated with a '+'. If any expression between the '+' characters
+is not a number, the function should consider this expression as 0.
+CREATE OR REPLACE FUNCTION sum_of2(p_char VARCHAR2) RETURN number IS
+Test:
+SELECT sum_of2('1+21 + bubu + y1 + 2 + -1 + 0.5 +') FROM dual;
+SELECT sum_of2('1+21 + bubu + y1 + 2 + -1 + 0,5 +') FROM dual;
+Help: one of the two formats (0.5 or 0,5) should be evaluates as half. (It depends on your environment settings.)
+
+Exercise 6
+----------
+Write a procedure which prints out (based on table NIKOVITS.PARENTOF) the name and money
+of people for whom it is true that neither his/her name nor the name of his/her any ancestor
+contains the parameter character.
+CREATE OR REPLACE PROCEDURE char_not_in(p varchar2) IS
+Test:
+set serveroutput on
+execute char_not_in('B');
+Help: -> In the example below the correct output would be: XXX, QQQ and PPP
+
+XXX
+  YYYN
+    ZZZ
+  QQQ
+    PPP
+      RRRN
+
+
+
+
+

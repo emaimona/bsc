@@ -1,0 +1,65 @@
+Compulsory exercise for practice 3
+===========================================================================================
+Create a table in both databases (ullman, aramis) whose name is PRACTICE3, and it contains 
+the (Ename, ManagerName) pairs where the manager is the manager of the employee and the length
+of the two names is equal. (The names contain the same number of characters.)
+
+You can check whether you completed the compulsory exercises with the following SQL query:
+
+SELECT object_name "TABLE", created FROM user_objects 
+WHERE object_type='TABLE' AND object_name LIKE 'PRACTICE%'
+ORDER BY object_name;
+*******************************************************************************************
+
+Try to express the queries in db1_exercise2.txt in relational algebra.
+For this use the relational algebra calculator -> Relax (see Relax*.* files on homepage)
+
+
+Queries for the following tables
+--------------------------------
+NIKOVITS.EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+NIKOVITS.DEPT(deptno, dname, loc)
+NIKOVITS.SAL_CAT(category, lowest_sal, highest_sal)
+---------------------------------------------------
+
+-- (Salary categories)
+CREATE TABLE Sal_cat
+ (category NUMERIC,       -- salary category (1,2,3 ...)
+  lowest_sal NUMERIC,     -- lower bound of the category
+  highest_sal NUMERIC     -- upper bound of the category
+);
+
+Sal_cat 
+-------------
+1   700  1200
+2  1201  1400
+3  1401  2000
+4  2001  3000
+5  3001  9999
+
+
+Queries for Built-in Functions
+------------------------------
+1.  List the employees whose salary is divisible by 15. (use mod function)
+2.  List the employees, whose hiredate is greater than 1982.01.01. (use to_date function)
+3.  List the employees where the second character of his name is 'A'. (use substr function)
+4.  List the employees whose name contains two 'L'-s. (use instr function)
+5.  List the last 3 characters of the employees' names. (use substr function)
+6.  List the emloyees whose name has a 'T' in the last but one position (position before the last). (use substr function)
+7.  List the square root of the salaries rounded to 2 decimals and the integer part of it. (sqrt, round, trunc function)
+8.  In which month was the hiredate of ADAMS? (give the name of the month) (date functions)
+9.  Give the number of days since ADAMS's hiredate. (date arithmetic)
+10. List the employees whose hiredate was Tuesday. (Take care of the length of name_day string!) (to_char function)
+11. Give the manager-employee name pairs where the length of the two names are equal. (length function)
+12. List the employees whose salary is in category 1. (see Sal_cat table)
+13. List the employees whose salary category is an even number. (mod function)
+14. Give the number of days between the hiredate of KING and the hiredate of JONES.
+15. Give the name of the day (e.g. Monday) which was the last day of the month in which KING's hiredate was. (last_day function)
+16. Give the name of the day (e.g. Monday) which was the first day of the month in which KING's hiredate was. (trunc function)
+17. Give the names of employees whose department name contains a letter 'C' and whose salary category is >= 4.
+
+18. List the name and salary of the employees, and a charater string where one '#' denotes 1000 (rounded). (rpad function)
+(So if the salary is 1800 then print -> '##', because 1800 rounded to thousands is 2.) 
+
+
+

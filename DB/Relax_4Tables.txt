@@ -1,0 +1,78 @@
+Relational algebra calculator -> RelaX
+--------------------------------------
+https://dbis-uibk.github.io/relax/landing
+
+Please read the Help (upper right corner)
+
+How to create relations and insert tuples into them:
+----------------------------------------------------
+1. Click on 'Group Editor' tab
+2. Copy into 'Group Editor' window your data. Find below my examples!
+3. Click on "preview" button then on "use Group in editor" button
+4. Now you can run your queries clicking on 'Relational Algebra' or 'SQL' tab.
+
+Attention!!!
+This implementation allows only sets and not multisets.
+There are differencies between Oracle and Relax SQL syntax. 
+Name of a relation is case-sensitive.
+
+---------------------------------------------------------
+Sample relation Emp, Dept, Sal_cat, Likes
+=========================================================
+group: DB1 4_tables
+description[[ Emp(empno, ename, job, mgr, hiredate, sal, comm, deptno) relation ]]
+Emp={
+empno:number, ename:string, job:string, mgr:number , hiredate:date, sal:number, comm:number, deptno:number
+7369,	SMITH,	CLERK,     7902,	1980-12-17,   800, null,   20
+7499,	ALLEN,	SALESMAN,  7698,	1981-02-20,  1600,   300,  30
+7521,	WARD,	SALESMAN,  7698,	1981-02-22,  1250,   500,  30
+7566,	JONES,	MANAGER,   7839,	1981-04-02,  2975,  null,  20
+7654,	MARTIN,	SALESMAN,  7698,	1981-09-28,  1250,  1400,  30
+7698,	BLAKE,	MANAGER,   7839,	1981-05-01,  4250,  null,  30
+7782,	CLARK,	MANAGER,   7839,	1981-06-09,  2450,   200,  10
+7788,	SCOTT,	ANALYST,   7566,	1982-12-09,  3000,  null,  20
+7839,	KING,	PRESIDENT, null,        1981-11-17,  5000,  null,  10
+7844,	TURNER,	SALESMAN,  7698,	1981-09-08,  1500,    10,  30
+7876,	ADAMS,	CLERK,     7788,	1983-01-12,  1100,  null,  20
+790,	JAMES,	CLERK,     7698,	1981-12-03,   950,  null,  30
+7902,	FORD,	ANALYST,   7566,	1981-12-03,  3000,   700,  20
+7934,	MILLER,	CLERK,     7782,	1982-01-23,  1300,   600,  10
+8001,   COOK,   MANAGER,   7839,        1981-06-09,  3800,  null,  50
+8002,   HART,   SALESMAN,  8001,        1982-05-09,  1600,   200,  50
+8003,   WOLF,   CLERK,     8001,        1983-04-09,  1000,   null, 50
+}
+Dept={
+deptno:number, dname:string, loc:string
+10,  ACCOUNTING,  'NEW YORK'
+20,  RESEARCH,    'DALLAS'
+30,  SALES,       'CHICAGO'
+40,  OPERATIONS,  'BOSTON'
+50,  MARKETING,   'DENVER'
+}
+Sal_cat={
+category:number, lowest_sal:number, highest_sal:number
+1, 700,  1200
+2, 1201, 1400
+3, 1401, 2000
+4, 2001, 3000
+5, 3001, 9999
+}
+Likes = {
+name:string, fruits:string
+Piglet,   apple
+Piglet,   pear
+Piglet,   raspberry
+Winnie,   apple
+Winnie,   pear
+Kanga,    apple
+Tiger,    apple
+Tiger,    pear
+}
+=========================================================
+Sample query:
+List the employees whose department's location is DALLAS or CHICAGO?
+
+pi ename, loc sigma e.deptno = d.deptno and (loc = 'DALLAS' or loc = 'CHICAGO') ( rho e (Emp) x rho d (Dept) )
+
+
+

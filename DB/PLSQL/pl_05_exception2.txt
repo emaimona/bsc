@@ -1,0 +1,51 @@
+-- put comments before the first 5 lines one by one to test other exceptions
+
+set serveroutput on
+DECLARE 
+  v_nev  VARCHAR2(20);
+  v_szam NUMBER := 0;
+  CURSOR emp_cur IS SELECT ename FROM emp;
+
+  error1 EXCEPTION;
+  pragma EXCEPTION_INIT(error1, -20001);
+  error2 EXCEPTION;
+  pragma EXCEPTION_INIT(error2, -20002);
+
+  PROCEDURE err_proc(v NUMBER) IS
+  BEGIN
+    IF MOD(v, 2) = 0 THEN
+      RAISE_APPLICATION_ERROR('-20001', 'error1');
+    ELSE
+      RAISE_APPLICATION_ERROR('-20002', 'error2');
+    END IF;
+  END;
+
+BEGIN
+  err_proc(1);                                        -- error2
+  err_proc(2);                                        -- error1
+  v_szam := 1/v_szam;                                 -- zero divide
+  SELECT ename INTO v_nev FROM emp WHERE empno < 0;   -- no_data found
+  SELECT ename INTO v_nev FROM emp WHERE empno > 0;   -- too_many_rows
+  OPEN emp_cur;
+  LOOP
+    FETCH emp_cur INTO v_nev;
+    EXIT WHEN emp_cur%notfound;
+    dbms_output.put(v_nev||' -> ');
+    dbms_output.put_line(to_char(emp_cur%rowcount));
+  END LOOP;
+  CLOSE emp_cur;
+EXCEPTION
+  WHEN error1 THEN
+    dbms_output.put_line('error1 occured');
+  WHEN error2 THEN
+    dbms_output.put_line('error2 occured');
+  WHEN zero_divide THEN
+    dbms_output.put_line('zero divide error');
+  WHEN no_data_found THEN
+    dbms_output.put_line('No Data Found error');
+  WHEN too_many_rows THEN
+    dbms_output.put_line('Too many rows error');
+  WHEN OTHERS THEN
+    dbms_output.put_line('something else ...');
+END;
+/

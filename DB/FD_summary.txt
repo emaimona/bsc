@@ -1,0 +1,120 @@
+Functional Dependencies, Normal Forms
+-------------------------------------
+Introduction: 
+Sometimes a relation schema is not good enough, it has different problems, we call these "anomalies". (see page 86 in Textbook)
+Solution: we decompose relations into two or more relations
+Which decomposition will be good? --> theory of FDs will help
+
+Definition of a FD (Notation: X->Y, X and Y are sets of attributes, X=A1A2...An, Y=B1B2...Bm)
+ If two tuples of R agree on X, they must also agree on Y.
+ If we can be sure that a FD is true in every instance of R, we say that R satisfies the FD.
+Definition of keys, superkeys for R
+ Key:   1. functionally determine all other attributes; 2. minimal (no proper subset)
+ Superkey: superset of a key (need not satisfy minimality)
+How to find a key (all keys) knowing the FDs? --> see Example 3.2
+
+Rules about functional dependencies: 
+ S (a set of FDs) follows from T if every relation that satisfies all FDs in T also satisfies all FDs in S. (Notation: T => S)
+ S is equivalent to T, if T => S and S => T.
+trivial FDs hold in every relation (right side is a subset of the left side)
+- splitting rule: X->A1A2...An  => {X->A1, X->A2, ... X->An} 
+- combining rule: {X->A1, X->A2, ... X->An} => X->A1A2...An 
+- transitive rule: {X->Y, Y->Z} => X->Z
+- trivial-dependency rule: A1A2...An->B1B2...Bk <=> A1A2...An->B1B2...BkA1 
+ (remove from the right side attributes that appear on the left)
+
+A general principle from which all true rules follow.
+ Closure set of attributes X under S (denoted by X+) --> All attributes A for which X->A follows from S 
+So: A1A2...An->B follows from S iff B in {A1,A2, ... An}+
+ALGORITHM 3.7: computing the closure of a set of attributes {A1,A2,... An}
+  initialize X = {A1,A2,... An}
+  (repeatedly expand X by adding the right sides of FDs where the left side is already in X)
+see Example 3.8
+Armstrong axioms: 1. Reflexivity, 2. Augmentation, 3. Transitivity (page 81)
+ A set of rules by which we can derive any FD that follows from a given set.
+1. Reflexivity 
+   If {B1, B2, ... Bm} <= {A1,A2, ... An}  then  A1A2...An -> B1B2...Bm
+2. Augmentation
+   If A1A2...An -> B1B2...Bm  then  A1A2...AnC1C2...Ck -> B1B2...BmC1C2...Ck
+3. Transitivity
+   If A1A2...An -> B1B2...Bm and B1B2...Bm -> C1C2...Ck  then A1A2...An -> C1C2...Ck
+Example
+R= {A,B,C,D,E,F} S={AB->C, C->D, A->E, DE->F}
+Prove BCE->F with the Armstrong axioms
+1. C -> D (given)
+2. CE -> DE (augmentation)
+3. DE -> F (given)
+4. CE -> F (transitivity for 2. and 3.)
+5. BCE -> CE (reflexivity)
+6. BCE -> F (transitivity for 5. and 4.)
+
+Sometimes we can choose from equivalent sets of FDs.
+Definition of a basis for S (T is a basis for S if T <=> S) 
+Minimal basis: singleton right sides, no redundant FD, no redundant attribute on left sides
+
+Decomposition: splitting the attributes R --> R1, R2 
+1. {attributes of R} = {attr. of R1} U {attr. of R2}
+2. Ri = proj of R
+
+When we decompose a relation R into R1 and R2, what about the FDs?
+Projecting FDs of R to R1 (R1 is a projection of R to a subset of attributes)
+The projection of S (a set of FDs) to R1 is: all FDs that follow from S, and involve only attributes of R1
+ALGORITHM 3.12: Projecting a set S of FDs to R1
+  (first construct a basis for the projection [compute all consequencies of S involving only attributes of R1], 
+   then reduce to a minimal basis [leave out redundant FDs and redundant elements from left sides])
+see Example 3.13
+
+Anomalies in a relation (Redundancy, Update and Delete anomalies, see page 86)
+Solution: decomposition (how to decompose?)
+A "good" relation eliminates anomalies: R in Boyce-Codd normal form (BCNF) 
+BCNF: the left side of every non-trivial FD must be a superkey
+How to check if a relation is in BCNF:
+- examine FD-s
+- find the keys (compute the closure sets of different attribute sets; extend the set if needed)
+- find a BCNF violating FD if it exists
+Decomposition based on a BCNF violation X->Y: R1: X+, R2: X U {R \ X+}
+ALGORITHM 3.20: BCNF decomposition 
+  recursively decompose R based on a BCNF violation, and project FDs to the decomposed relations
+  you can check (based on the projected FDs) if a decomposed relation is in BCNF; if not decompose it further
+see Example 3.19
+
+Properties of a decomposition: 1. eliminate anomalies, 2. lossless join, 3. dependency preserving 
+Question: If we decompose R into R1, R2, ... Rn can we get back R with the join of Ri-s? 
+ If yes --> it's a lossless join decomposition
+ If t is a tuple of R, it will surely be in the join --> trivial
+ (the projection of t is surely in Ri for each i, so t will be in the result of the join) 
+ The other way is not always true. 
+EXAMPLE 3.21: a decomposition which is not lossless join decomposition
+
+Chase test for lossless join (-> 3.22 Example)
+ we build a tableau, based on the decomposition
+ let's suppose there is a tuple t which is in the join
+ we prove (by applying FD-s) that t must also be in R.
+
+Example 3.22 and Example 3.23
+R(A,B,C,D) decomposed into (A,D), (A,C) and (B,C,D)
+Let's suppose there is a tuple t=(a,b,c,d) in the join. We should prove that this tuple
+was also in the original relation R.
+If a tuple (a,b,c,d) is produced in the join, it means there are (a,d), (a,c)
+and (b,c,d) tuples in the projections. These tuples were projected from the following
+tuples in R: (a,b1,c1,d) this produced (a,d); (a,b2,c,d2) this produced (a,c); 
+and (a3,b,c,d) this produced (b,c,d). --> see the initial tableau below
+We should prove that one of them is actually t=(a,b,c,d).
+
+Initial tableau for the decomposition:
+
+A  B  C  D
+-----------
+a  b1 c1 d
+a  b2 c  d2 
+a3 b  c  d
+
+Let's suppose S = {A->B, B->C, CD->A}
+Using these FDs we can prove that (a,b,c,d) must be in R. (see Example 3.23)
+
+EXAMPLE 3.25: a decomposition which is not dependency preserving
+3NF: the left side of every non-trivial FD is a superkey or the right side consists of prime attributes only
+ Prime attribute: a member of some key
+ALGORITHM 3.26: 3NF decomposition with lossless join and dependency preserving properties
+  (find a minimal basis for S, decompose R based on X->A FDs in the minimal basis, add one more relation whose schema is a key of R)
+

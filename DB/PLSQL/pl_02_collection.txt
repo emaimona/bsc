@@ -1,0 +1,68 @@
+/*********
+
+Collections
+-----------
+
+PL/SQL has three collection types: associative array, VARRAY (variable-size array), and nested table.
+
+Collection methods
+
+A collection method is a PL/SQL subprogram: either a function that returns information about 
+a collection, or a procedure that operates on a collection.
+
+
+DELETE  Procedure  Deletes elements from collection.
+TRIM    Procedure  Deletes elements from end of varray or nested table.
+EXTEND  Procedure  Adds elements to end of varray or nested table.
+EXISTS  Function   Returns TRUE if and only if specified element of varray or nested table exists.
+FIRST   Function   Returns first index in a collection.
+LAST    Function   Returns last index in a collection.
+COUNT   Function   Returns number of elements in a collection.
+LIMIT   Function   Returns maximum number of elements that a collection can have.
+PRIOR   Function   Returns the index that precedes specified index.
+NEXT    Function   Returns the index that succeeds specified index.
+
+*******/
+
+
+
+/****************** record and associative array ****************/
+     
+rec:  | 10 | King |
+
+tab: Bubu
+     Baba
+     Bobo
+
+tab2:  10 | ACCOUNTING | NEW YORK
+       ...
+
+set serveroutput on
+DECLARE
+  TYPE rek_type IS RECORD(f1 INTEGER DEFAULT 10, f2 dolgozo.dnev%TYPE);  -- type declaration
+  rec rek_type;                                                          -- variable definition
+  TYPE tab_type IS TABLE OF VARCHAR2(30) INDEX BY BINARY_INTEGER;        -- associative array type
+  tab tab_type;                                                          -- variable of type assoc. array
+  rec_dept dept%ROWTYPE;                                                 -- record variable
+  TYPE tab_type2 IS TABLE OF rec_dept%ROWTYPE INDEX BY BINARY_INTEGER;   -- array of records
+  tab2 tab_type2;
+BEGIN
+  rec.f2 := 'KING';
+  dbms_output.put_line(rec.f1||' -- '||rec.f2);                          -- default value
+  tab(1) := 'Bubu'; tab(2) := 'Baba'; tab(3) := 'Bobo';
+  FOR i IN tab.FIRST .. tab.LAST LOOP
+    dbms_output.put_line(tab(i));
+  END LOOP;
+  SELECT * INTO rec_dept FROM dept WHERE deptno = 10;
+  tab2(1) := rec_dept;
+  dbms_output.put_line(tab2(1).deptno||' -- '||tab2(1).dname||' -- '||tab2(1).loc);
+END;
+/
+Result
+--------
+10 -- KING
+Bubu
+Baba
+Bobo
+10 -- ACCOUNTING -- NEW YORK
+

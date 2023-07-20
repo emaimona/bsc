@@ -1,0 +1,88 @@
+-- Subtypes
+
+-- unconstrained (gives only an alias for compatibility purpose)
+SUBTYPE CHARACTER IS CHAR;
+
+-- contrained (a real subset)
+SUBTYPE INTEGER IS NUMBER(38,0);
+
+-- Predefined subtypes in STANDARD package, you can see them with the following query:
+SELECT text FROM all_source WHERE type='PACKAGE' and name='STANDARD' ORDER BY line;
+
+-- examples from the package:
+/*
+  type BOOLEAN is (FALSE, TRUE);
+  subtype INTEGER is NUMBER(38,0);
+  subtype DECIMAL is NUMBER(38,0);
+  subtype BINARY_INTEGER is INTEGER range '-2147483647'..2147483647;
+  subtype NATURAL is BINARY_INTEGER range 0..2147483647;
+  subtype NATURALN is NATURAL not null;
+
+  type sys_refcursor is ref cursor;
+*/
+
+-- user-defined subtypes (record, table, type inheritance + constraint)
+DECLARE
+  SUBTYPE BirthDate IS DATE NOT NULL;         -- Based on DATE type
+  SUBTYPE Counter IS NATURAL;                 -- Based on NATURAL subtype
+  
+  SUBTYPE pinteger IS PLS_INTEGER RANGE -9..9;  
+
+  TYPE NameList IS TABLE OF VARCHAR2(10);
+  SUBTYPE DutyRoster IS NameList;             -- Based on TABLE type
+  
+  TYPE TimeRec IS RECORD (minutes INTEGER, hours INTEGER);
+  SUBTYPE FinishTime IS TimeRec;                -- Based on RECORD type
+  SUBTYPE ID_Num IS employees.employee_id%TYPE; -- Based on column type
+BEGIN
+  NULL;
+END;
+/
+
+-- implicit conversion CHAR -> NUMBER
+set serveroutput on
+DECLARE
+  V1  CHAR(10):='1234';
+  V2  NUMBER;
+BEGIN
+  V2 := V1 + 1;                          -- CHAR -> NUMBER
+  DBMS_OUTPUT.PUT_LINE ('V2: ' || TO_CHAR(V2));
+END;
+/
+
+-- Take care of blank-padded semantics in case of CHAR data type !!!
+set serveroutput on
+DECLARE
+  last_name1 CHAR(5)  := 'BELLO';     -- no trailing blanks
+  last_name2 CHAR(10) := 'BELLO   ';  -- trailing blanks
+BEGIN
+  IF last_name1 = last_name2 THEN
+    DBMS_OUTPUT.PUT_LINE(last_name1 || '(length:'|| length(last_name1)||') equals ' ||
+    last_name2  || '(length:'|| length(last_name2)||')');
+  ELSE
+    DBMS_OUTPUT.PUT_LINE(last_name2 || ' does not equal ' || last_name1);
+  END IF;
+END;
+/
+-----------------------------------------
+BELLO(length:5) equals BELLO     (length:10)
+
+
+-- Using TIMESTAMP data type 
+-- TIMESTAMP stores the fractional seconds
+DECLARE
+  start_time   VARCHAR2(50);
+  finish_time  VARCHAR2(50);
+  elapsed_time NUMBER(30,10);
+BEGIN
+  -- Get system time as seconds and fractional seconds past midnight:
+  SELECT TO_CHAR(SYSTIMESTAMP,'SSSSS.FF') INTO start_time FROM sys.DUAL;
+  -- Get system time again:
+  SELECT TO_CHAR(SYSTIMESTAMP,'SSSSS.FF') INTO finish_time FROM sys.DUAL;
+  elapsed_time := TO_NUMBER(finish_time, '99999.999999') 
+                - TO_NUMBER(start_time, '99999.999999');
+  DBMS_OUTPUT.PUT_LINE ('Elapsed time: ' || TO_CHAR(elapsed_time,'0.999999'));
+END;
+/
+-----------------------
+Elapsed time:  0.000098

@@ -1,0 +1,50 @@
+set serveroutput on
+DECLARE
+  except1 EXCEPTION;
+  PRAGMA exception_init(except1, -20000);
+BEGIN
+  raise_application_error('-20001', 'except2');   -- comment this line
+  RAISE except1;                                  -- then comment this line too 
+  DECLARE
+    V NUMBER := 1/0;                              -- finally change it to 1/1
+  BEGIN
+    V := 1/0;
+  EXCEPTION 
+    WHEN OTHERS THEN dbms_output.put_line('inner block');
+  END;
+EXCEPTION 
+  WHEN OTHERS THEN dbms_output.put_line(SQLCODE||' ~~~ '||sqlerrm);
+END;
+/
+first output:  -20001 ~~~ ORA-20001: except2
+second output: -20000 ~~~ ORA-20000:
+third output:  -1476 ~~~ ORA-01476: division by zero
+fourth output: inner block
+
+
+/* Raising an error from a subprogram */
+
+DECLARE
+  v1 NUMBER :=0;
+  FUNCTION f1 RETURN NUMBER IS
+  except1 EXCEPTION;
+  BEGIN
+    raise except1;                                    -- comment this line
+    raise_application_error('-20000', 'exception1');  -- finally comment this too
+    RETURN 10;
+  EXCEPTION 
+    WHEN except1 THEN RETURN 20;
+    WHEN OTHERS THEN RETURN 30;                       -- then comment this too
+  END f1;
+BEGIN
+  v1 := f1; dbms_output.put_line(v1);
+EXCEPTION 
+  WHEN OTHERS THEN dbms_output.put_line(SQLCODE||' ~~~ '||sqlerrm);
+END;
+/
+first output:   20
+second output:  30
+third output:   -20000 ~~~ ORA-20000: exception1
+fourth output:  10
+
+

@@ -1,0 +1,50 @@
+Predefined exceptions:
+
+SELECT text FROM all_source WHERE type = 'PACKAGE'
+AND name = 'STANDARD' AND lower(text) LIKE '%exception_init%';
+
+
+Put comments before some statements (or delete comments) to test other exceptions.
+
+SET SERVEROUTPUT ON
+BEGIN                       -- 3 nested blocks
+ DECLARE
+  v1 emp.sal%TYPE;
+  v2 emp.comm%TYPE;
+  v3 INTEGER := 0;
+ BEGIN
+  v3 := 1/v3;                  -- comment this second
+  BEGIN
+   SELECT sal, comm INTO v1, v2 FROM emp WHERE ename LIKE 'S%';  -- then change it to  'X%'
+  EXCEPTION
+   WHEN too_many_rows THEN 
+    BEGIN
+     v1 := 1; v2 := 2;
+    END;
+  END;
+  dbms_output.put_line(to_char(v1)||' -- '|| nvl(to_char(v2), 'null'));
+ 
+ EXCEPTION
+  WHEN zero_divide THEN dbms_output.put_line('zero divide');      -- comment this first       
+  WHEN too_many_rows THEN dbms_output.put_line('too many rows');
+ END;
+ dbms_output.put_line('main program');
+EXCEPTION
+  WHEN OTHERS THEN dbms_output.put_line(SQLCODE || ' -- ' || sqlerrm);
+END;
+/
+first output:   zero divide
+                main program
+second output:  -1476 -- ORA-01476: division by zero
+third output:   1 -- 2        too many rows handled
+                main program
+fourth output:  100 -- ORA-01403: No Data found
+
+
+-- Printing error codes
+
+BEGIN
+ dbms_output.put_line(sqlerrm(-6502));
+END;
+/
+
