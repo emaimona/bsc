@@ -1,0 +1,15 @@
+/*
+Read the parameters of the game from a text file. This file defines the number of fields, and then defines them.
+ We know about all fields: the type. If a field is a service or lucky field, the cost of it is also defined.
+ After the these parameters, the file tells the number of the players, and then enumerates the players with their names and strategies.
+In order to prepare the program for testing, make it possible to the program to read the roll dices from the file.
+*/
+
+I - The input file follow the format
+
+Number of fields
+List of fields (if Lucky or Service, then the cost is given)
+Number of players
+List of players (name, strategy)
+
+II - The roll dices will have a list of numbers from one to six

@@ -1,0 +1,13 @@
+6
+Service 150
+Property
+Lucky 50
+Property
+Lucky 100
+Property
+5
+John Careful
+Mary Greedy
+Peter Tactical
+Luca Careful
+Emanuel Greedy
